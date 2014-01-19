@@ -8,6 +8,7 @@
 \newcommand{\bluecolor}[1]{\textcolor{blue}{#1}}
 \newcommand{\figref}[1]{Figure~\ref{#1}}
 \newcommand{\secref}[1]{Section~\ref{#1}}
+\newcommand{\appref}[1]{Appendix~\ref{#1}}
 \newcommand{\tabref}[1]{Table~\ref{#1}}
 \newcommand{\algoref}[1]{Algorithm~\ref{#1}}
 \newcommand\Mark[1]{\textsuperscript#1}
@@ -188,7 +189,11 @@ The aim of energy disaggregation is to provide estimates, $\hat{y}^{(n)}_t$, of 
 \label{sec:nilmtk}
 
 \noindent
-NILMTK aims to address the following three design goals:
+NILMTK aims to address the following three design goals:\bluecolor{NILMTK is designed keeping in mind three different use case scenarios:
+1. Analysis of existing datasets and algorithms
+2. Plug n play for the new algorithms proposed or new datasets released for broad comparison across existing benchmarks
+3. Real time inference - Learned models can be used to disaggregate in rela time.
+The reason being that we have already mentioned the primary objectives of NILMTK and different pieces it knits together i.e. datasets, algortihsm, benchmarks etc. So lets not confuse with again putting design goals and rather mention them as use cases. This will further help in then saying that we then evaluate NILMTK for each of these different use case scenarios at a later stage.}
 \begin{enumerate}
 \item \textbf{Analysis}: The toolkit should facilitate the easy analysis of NILM data sets and expose the entire pipeline from data import through to disaggregation metrics. 
 \item \textbf{Ease of adding new algorithms}: The toolkit should provide consistent interfaces for new disaggregation algorithms.
@@ -199,8 +204,9 @@ NILMTK aims to address the following three design goals:
 %\bluecolor{I dont think you need to give so much justification for why you chose python.}
 %Based on these three design goals, we chose to implement NILMTK in Python. Python is becoming increasingly popular for data science, machine learning and open science. Python allows easy deployment in diverse environments including academic settings. The availability of a vast set of libraries ranging from statistical analysis (Pandas), machine learning (Scikit-learn, PyMC), web frameworks (Django), GPU-computing (Theano) etc., make it a suitable choice for our toolkit. Further, the availability of Python on low cost platforms such as Raspberry Pi allows ease of deployment; and Python allows for computational bottlenecks to be easily re-written in C/C++/Cython to improve performance.
 
-We implemented NILMTK in Python due to the availability of a vast set of libraries supporting both machine learning research (e.g.\ Pandas, Scikit-learn) and the deployment of such research as web applications (Django). Furthermore, Python allows easy deployment in diverse environments including academic settings and is increasingly being used for data science.
-Our API design is heavily based on scikit-learn~\cite{scikit, scikit_api}, which is a well known machine learning framework in the Python community. Scikit-learn is designed for general purpose machine learning tasks and has set high code and documentation standards. However, as discussed earlier in \secref{sec:related}, the domain specifics of NILM demand a specialised framework. 
+We implemented NILMTK in Python due to the availability of a vast set of libraries supporting both machine learning research (e.g.\ Pandas, scikit-learn) and the deployment of such research as web applications (Django, Flask). Furthermore, Python allows easy deployment in diverse environments including academic settings and is increasingly being used for data science.
+Our API design is heavily based on scikit-learn~\cite{scikit, scikit_api}.
+%, which is a well known machine learning framework in the Python community. Scikit-learn is designed for general purpose machine learning tasks and has set high code and documentation standards. However, as discussed earlier in \secref{sec:related}, the domain specifics of NILM demand a specialised framework. 
 
 \figref{fig:pipeline} presents the NILMTK pipeline from the import of data sets to the evaluation of various disaggregation algorithms over NILM specific metrics. We discuss each module of the NILMTK pipeline below.
 
@@ -216,55 +222,50 @@ Our API design is heavily based on scikit-learn~\cite{scikit, scikit_api}, which
 %We now describe the implementation and design of each module of the NILMTK pipeline.
 
 %\subsection{Dataset Importers}
-\subsection{Data Format}
+\subsection{Data Format\bluecolor{maybe data interface?}}
 
 \noindent
-As discussed in \secref{sec:related}, a number of data sets have been
-released recently. However, differences between these data sets have
-resulted in low adoption, limiting the ease by which NILM algorithms
-can be compared. Motivated by this, we propose NILMTK-DF, a common
+Motivated by our discussion on the wide differences between multiple data sets released in public domain in \secref{sec:related}, we propose NILMTK-DF, a common
 data set format inspired by the REDD format~\cite{redd}, into which
 existing data sets can be converted. NILMTK currently includes
 importers for the following data sets: REDD, PECAN, HES, iAWE, AMPds
-and UKPD. However, it was not possible to include an importer for
-BLUED due to the lack of sub-metered appliance power data and also
-Tracebase was not included due to the lack of information regarding
-which appliances were present in the same household.
+and UKPD. BLUED was excluded due to the lack of sub-metered appliance power data.Tracebase was not included due to the lack of information regarding which appliances were present in the same household.
 
 After import, the data resides in our NILMTK-DF in-memory data structure, which is used throughout the NILMTK pipeline. Data can be saved or loaded from disk at multiple stages in the NILMTK processing pipeline to allow other tools to interact with NILMTK.  We provide two CSV flat file formats: a rich NILMTK-DF CSV format and a ``strict REDD" format which allows researchers to use their existing tools designed to process REDD data.  We also provide a more efficient binary format using the Hierarchical Data Format (HDF5).  In addition to storing electricity data, NILMTK-DF can also store relevant metadata and other sensor modalities such as gas, water, temperature, etc. It has been shown in the past that such additional sensor and metadata information may help enhance NILM prediction~\cite{schoofs_2010}. 
 
-Another important feature of our format is naming standardisation.  Different data sets use different labels for the same class of appliance (e.g.\ REDD uses `refrigerator' whilst AMPds uses `FGE') and different names for the measured parameters.  When data is first imported into NILMTK, these diverse labels are converted to a standard vocabulary.
+Another important feature of our format is standardisation of nomenclature.  Different data sets use different labels for the same class of appliance (e.g.\ REDD uses `refrigerator' whilst AMPds uses `FGE') and different names for the measured parameters.  When data is first imported into NILMTK, these diverse labels are converted to a standard vocabulary\bluecolor{Put a link where these are defined}.
 
 %% Need to cut short
 %\bluecolor{This again can potentially be represented as illustration better.}
-In addition, NILMTK allows rich metadata to be associated with a building, appliance or meter.  For example, NILMTK can store the parameters measured by each meter (e.g.\ reactive power, real power), the geographical coordinates of each building (useful for exploring the relationship between appliance usage and weather), the mains wiring defining the meter hierarchy (useful if a single appliance is measured at the appliance, circuit and aggregate levels), whether a single meter measures multiple appliances, which appliances are not sub-metered and also whether a specific light is dimmable. A full description of NILMTK-DF is provided in the appendix.
+In addition, NILMTK allows rich metadata to be associated with a building, appliance or meter.  For example, NILMTK can store the parameters measured by each meter (e.g.\ reactive power, real power), the geographical coordinates of each building (useful for exploring the relationship between appliance usage and weather), the mains wiring defining the meter hierarchy (useful if a single appliance is measured at the appliance, circuit and aggregate levels), whether a single meter measures multiple appliances, which appliances are not sub-metered and also whether a specific light is dimmable. A full description of NILMTK-DF is provided in \appref{app:appendix_data_format}.
 
 %% Need to cut short- Maybe just a line or two
 %% Should this even be included? it won't be ready for when the reviewers read the paper. Maybe it should be future work?
 %Of course, we cannot hope to enumerate every possible appliance name and metadata attribute, hence we will use an instance of Semantic Mediawiki hosted at energy-disaggregation.org as the canonical source for the controlled vocabulary.  The wiki will make it easy for the community to add new appliance classes and metadata attributes.  Mediawiki has been used in other communities to create a collaborative controlled vocabulary; for example Open Street Map~\cite{haklay2008openstreetmap} use a wiki to maintain a list of `tags', and Semantic Mediawiki has been proposed as a mechanism for maintaining a controlled vocabulary for astronomical objects~\cite{chalmerscollaborative}.
 
 %% This is interesting and should be there as a motivation!
-Through such a combination of metadata and naming standardisation, NILMTK allows data analysis to be performed over multiple data sets. For example, users can perform queries such as:
+Through such a combination of metadata and standard nomenclature, NILMTK further allows for analysis of data across multiple  data sets. For example, users can perform queries such as:
 ``what is the average energy consumption of refrigerators in the USA compared to the UK?"
 %``how does the average energy consumption of fridges in the USA compare to fridges in the UK?"
 
 \subsection{Data Set Statistics and Diagnostics}
 
 \noindent
-Due to a variety of challenges in collecting real world data, no data set is free of errors. Hence, researchers often need to spend a considerable amount of time exploring the detailed characteristics of each data set before proceeding with their research. One such common problem arises due to missing data.  Short gaps could be the result of 
+Due to a variety of challenges in collecting real world data, no data set is free of errors\bluecolor{most data sets contain gaps or missing values (I dont think its right to label them as errors) - or call something else but errors.}. Hence, researchers often need to spend a considerable amount of time exploring the detailed characteristics of each data set before proceeding with their research. One such common problem arises due to missing data.  Short gaps could be the result of 
 %a random event causing 
 the loss of a small number of radio transmissions from a wireless sensor. However, larger gaps are more likely to be caused by either a faulty or switched off sensor.
 %(in which case the appliance state is unknown) or switched off (along with the attached appliance).  
-To help diagnose these issues, NILMTK provides the following four functions: a function to calculate the proportion of samples which are missing across an entire data set, %(with the option to either include or exclude large gaps)
+To help diagnose these issues, NILMTK provides the following four functions\bluecolor{You may again refer to the specific section in your released documentation that talks about these 4 functions. 
+At some point earlier - you may mention that detailed documentation is released and give the hyperlink. You may also mention that throughout the paper you will refer to specific sections of this documentation that provide further detail for the interested reader.}: a function to calculate the proportion of samples which are missing across an entire data set, %(with the option to either include or exclude large gaps)
 a function to plot the dropout rate over time, a function to get the total sensor up-time and a function to get the boundaries of complete sections of data. %\bluecolor{Again, too verbose description of functions to calculate statistics. Can be easily explained succinctly.}
 
-NILMTK also provides functions for exploring appliance usage.  For example, the toolkit can calculate the distribution of appliance usage over repeating time periods, correlations between appliances and weather or other appliances, and the distributions of appliance power demands, on-durations and off-durations.  Furthermore, to explore the proportion of aggregate data which has been sufficiently sub-metered, NILMTK provides functions to calculate the proportion of time slices where a minimum percentage of the total energy has been sub-metered and also produces a list of the top-$k$ appliances across the time slices.
+NILMTK also provides functions for exploring appliance usage.  For example, the toolkit can calculate the distribution of appliance usage over repeating time periods, correlations between an appliance and weather conditions or across appliances, and the distributions of appliance power demands, on-durations and off-durations.  Furthermore, to explore the proportion of aggregate data which has been sufficiently sub-metered, NILMTK provides functions to calculate the proportion of time slices where a minimum percentage of the total energy has been sub-metered and also produces a list of the top-$k$ appliances across the time slices.
 
 \subsection{Preprocessing}
 \label{sec:preprocessing}
 
 \noindent
-The data sets described above have been collected with a range of hardware, with different aims and under different settings. As shown in \tabref{table:datasets}, the sampling frequency of appliance monitors varies from 1 second to 2 minutes across the data sets.  Thus, we provide filters to down-sample data sets at a specified frequency. Further, these data sets have been collected from different countries, where the voltage fluctuations vary widely. Batra et al. showed voltage fluctuations from 180-250~V in the iAWE data set collected in India~\cite{iawe}, while the voltage variation in the SMART* data set is in the range 118-123~V. Hart et al.\ showed the need to factor these voltage fluctuations as they can significantly impact power draw~\cite{hart_1992}. Therefore, we also add a voltage normalisation function defined as follows: 
+The data sets described in \tabref{table:datasets} have been collected with a range of hardware, and under different settings.The sampling frequency of appliance monitors varies from 1 second to 2 minutes across the data sets.  NILMTK provide filters to down-sample data sets at a specified frequency. Further, these data sets have been collected from different countries, where the voltage fluctuations vary widely. Batra et al. showed voltage fluctuations from 180-250~V in the iAWE data set collected in India~\cite{iawe}, while the voltage variation in the SMART* data set is in the range 118-123~V. Hart et al.\ showed the need to factor these voltage fluctuations as they can significantly impact power draw~\cite{hart_1992}. Therefore, we also add a voltage normalisation function defined as follows: 
 \begin{equation}
 \textit{Power}_{\textit{normalised}} = 
 \left(\frac{\textit{Voltage}_{\textit{nominal}}}{\textit{Voltage}_{\textit{observed}}}\right)^2 
@@ -272,12 +273,12 @@ The data sets described above have been collected with a range of hardware, with
 \end{equation}
 %Figure \redcolor{X} shows the power draw of an air conditioner, before and after voltage normalisation.
 
-As we explain in the algorithms section below, the memory required by some NILM algorithms is exponential in the number of appliances. Thus, when high number of appliances are considered, the models do not fit into memory and distributed algorithms may be needed. This necessitates the need to filter out top-k appliances by their contribution which can be in terms of energy or power.  We also created preprocessing functions for fixing other common issues with these datasets, such as 1) filling small periods of missing data when appliance sensors did not report readings; 2) filtering out implausible values (such as when readings where observed voltage is more than twice the rated voltage); 3) filtering out appliance data when mains data is missing, etc.
+As explained in \secref{sec:training}, the memory required by some NILM algorithms is exponential in the number of appliances. Thus, when high number of appliances are considered, a single centralized model may not fit into memory, thus motivating the need for distributed algorithms. This necessitates the need to filter out top-$k$ appliances by their contribution which can be in terms of either energy or power.  We also created preprocessing functions for fixing other common issues with these datasets, such as 1) filling small periods of missing data when appliance sensors did not report readings; 2) filtering out implausible values (such as readings where observed voltage is more than twice the rated voltage) and 3) filtering out appliance data when mains data is missing.
 
 \subsection{Training and Disaggregation}
-
+\label{sec:training}
 \noindent
-NILMTK provides implementations of two common benchmark NILM algorithms: combinatorial optimisation (CO) and factorial hidden Markov model (FHMM). CO was proposed by Hart in his seminal work~\cite{hart_1992}, while techniques based on extensions of the FHMMs constitute the state-of-the-art. The aim of the inclusion of these algorithms is not to present state-of-the-art disaggregation results, but instead to enable new approaches to be compared to well studied benchmark algorithms without requiring the reimplementation of such algorithms. We now briefly describe these two algorithms.
+NILMTK provides implementations of two common benchmark NILM algorithms: combinatorial optimisation (CO) and factorial hidden Markov model (FHMM). CO was proposed by Hart in his seminal work~\cite{hart_1992}, while techniques based on extensions of the FHMMs have been proposed recently\bluecolor{add some citations}. The aim of the inclusion of these algorithms is not to present state-of-the-art disaggregation results, but instead to enable new approaches to be compared to well studied benchmark algorithms without requiring the reimplementation of such algorithms. We now briefly describe these two algorithms\bluecolor{may define NILM problem here}.
 %It should be highlighted that the intended purpose of these algorithms is only to serve as benchmarks. We do not claim these to give the best results. We would encourage the community to get involved and submit their algorithms to NILMTK. 
 
 \textbf{Combinatorial Optimisation:}
@@ -289,9 +290,9 @@ CO finds the \textit{optimal} combination of appliance states, which minimises t
 Since each time slice is considered as a separate optimisation problem, each time slice is assumed to be independent.
 %Its mathematical formulation is given as follows.
 %CO assumes time samples to be independent and identically distributed (iid). 
-CO resembles the subset sum problem and thus is NP-complete. The complexity of disaggregation for $T$ time slices is $O(TK^N)$, where $N$ is the number of appliances and $K$ is the number of states for each appliance. Since the complexity of CO is exponential in the number of appliances, the approach is only computationally tractable when a small number of appliances are modelled.
+CO resembles the subset sum problem and thus is NP-complete. The complexity of disaggregation for $T$ time slices is $O(TK^N)$, where $N$ is the number of appliances and $K$ is the number of states for each appliance. With the complexity of CO being exponential in the number of appliances, the approach is only computationally tractable when a small number of appliances are modelled.
 
-\textbf{Factorial Hidden Markov Model:} The power demand of each appliance can be modelled as the observed value of a Gaussian hidden Markov model (HMM). The hidden component of these HMMs are the states of the appliances. Energy disaggregation involves jointly decoding the power draw of $n$ appliances and hence a factorial HMM~\cite{fhmm} is well suited. A FHMM can be represented by an equivalent HMM in which each state corresponds to a different combination of states of each appliance. The complexity of disaggregation for such a model is $O(TK^{2N})$, and as a result FHMMs scale even more poorly than CO. Such a FHMM model has three parameters: i) prior probability ($\pi$) containing $K^N$ entries, ii) transition matrix ($A$) containing $K^N~*K^N$ or $K^{2N}$ entries, and iii) emission matrix ($B$) containing $2K^N$ entries. From an implementation perspective, even storing (or computing) $A$ for 14 appliances with 2 states each needs 8 GB of RAM. Hence, we propose to validate FHMMs on preprocessed data where either top-k appliances are considered, or appliances contributing less than a threshold are discarded.
+\textbf{Factorial Hidden Markov Model:} The power demand of each appliance can be modelled as the observed value of a Gaussian Hidden Markov Model (HMM). The hidden component of these HMMs are the states of the appliances. Energy disaggregation involves jointly decoding the power draw of $n$ appliances and hence a factorial HMM~\cite{fhmm} is well suited. A FHMM can be represented by an equivalent HMM in which each state corresponds to a different combination of states of each appliance. The complexity of disaggregation for such a model is $O(TK^{2N})$, and as a result FHMMs scale even worse than CO. Such a FHMM model has three parameters: i) prior probability ($\pi$) containing $K^N$ entries, ii) transition matrix ($A$) containing $K^N~*K^N$ or $K^{2N}$ entries, and iii) emission matrix ($B$) containing $2K^N$ entries. From an implementation perspective, even storing (or computing) $A$ for 14 appliances with 2 states each needs 8 GB of RAM. Hence, we propose to validate FHMMs on preprocessed data where either top-k appliances are considered, or appliances contributing less than a threshold are discarded.
 
 For certain algorithms like FHMMs, modeling relationship amongst consecutive samples is necessary. Thus, NILMTK provides facilities for dividing data into train and test while still maintaining the notion of time.
 \subsection{Model Import and Export}
@@ -299,22 +300,22 @@ For certain algorithms like FHMMs, modeling relationship amongst consecutive sam
 %\redcolor{I think the argument here should be: benchmark algos require sub-metered data -> sub-metered data is not available in real deployments -> recent training methods have been proposed which do not require sub-metered data -> need an interface between training and disag to support different training methods}
 
 \noindent
-Recently, a lot of interest has arisen in deploying live NILM systems, as evidenced by the many startup companies (e.g.\ Energy Aware, PlotWatt, Bidgely, etc.) currently aiming to provide disaggregated consumption feedback to end consumers. However, a major barrier which currently exists is that academic algorithms are only suitable for offline statical analysis of fixed data sets. Motivated by reducing the barrier from offline algorithms to those suitable for live deployments, we developed the Model module in NILMTK which encapsulates the results of the training module required by the disaggregation module. It is the responsibility of the model developer to create export and import functions to interface with a JSON file. NILMTK currently includes importers and exporters for both the FHMM and CO approaches. Further, in the use case section, we show how if the rated power is known, we can avoid learning on sub-metered data. At the time of deployment, this learnt JSON model can be easily imported and disaggregation performed.
+Recently, a lot of interest has arisen in deploying live NILM systems, as evidenced by the many startup companies (e.g.\ Energy Aware, PlotWatt, Bidgely, etc.) currently aiming to provide disaggregated consumption feedback to end consumers. Application of recent NILM algorithms proposed in academic research for live disaggregation is hindered by their primary suitability for offline statical analysis of fixed data sets. Motivated by reducing the barrier from offline algorithms to those suitable for live deployments, we developed the Model module in NILMTK which encapsulates the results of the training module required by the disaggregation module. It is the responsibility of the model developer to create export and import functions to interface with a JSON file. NILMTK currently includes importers and exporters for both the FHMM and CO approaches. Further, in \secref{sec:use_case}, we show how if the rated power is known, we can avoid learning on sub-metered data. At the time of deployment, this learnt JSON model can be easily imported and used for disaggregation.
 
 \subsection{Accuracy Metrics}
 
 \noindent
-As discussed in \secref{sec:related}, a range of accuracy metrics are required due to the diversity of application areas of energy disaggregation approaches. To satisfy this requirement, NILMTK provides a set of standard metrics to enable the evaluation of disaggregation algorithms. This will allow researchers to evaluate different energy disaggregation algorithms using identical accuracy measures. We now give a brief description of each metric along with its mathematical definition.
+As discussed in \secref{sec:related}, a range of accuracy metrics are required due to the diversity of application areas of energy disaggregation approaches. To satisfy this requirement, NILMTK provides a set of standard metrics. This will allow researchers to evaluate different energy disaggregation algorithms using identical accuracy measures. We now give a brief description of each metric along with its mathematical definition.\bluecolor{for each metric give relevant citations.}
 
 %error energy
-\textbf{Error in total energy assigned:} Represents the difference between the total energy assigned to appliance $n$ and the actual energy consumed by appliance $n$ over the data set.
+\textbf{Error in total energy assigned:} Represents the difference between the total energy assigned to appliance $n$ and the actual energy consumed by appliance $n$ over the entire data set.
 \begin{equation}
 %error^{(n)} = 
         \left | \sum_t y^{(n)}_t - \sum_t \hat{y}^{(n)}_t \right |
 \end{equation}
 
 %fraction energy assigned correctly
-\textbf{Fraction of total energy assigned correctly:} Represents the overlap between the fraction of total energy assigned to each appliance and the actual fraction of total energy consumed by each appliance over the data set.
+\textbf{Fraction of total energy assigned correctly:} Represents the overlap between the fraction of total energy assigned to each appliance and the actual fraction of total energy consumed by each appliance over the entire data set.
 \begin{equation}
 %fraction = 
         \sum_n min \left ( 
@@ -333,7 +334,7 @@ As discussed in \secref{sec:related}, a range of accuracy metrics are required d
 \end{equation}
 
 %rms error power
-\textbf{RMS error in assigned power:} Represents the root mean squared error between the power assigned to appliance $n$ and the actual power of appliance $n$ in each time slice $t$.
+\textbf{RMS error in assigned power:} Represents the root mean square error between the power assigned to appliance $n$ and the actual power of appliance $n$ in each time slice $t$.
 \begin{equation}
 %error^{(n)} = 
 \sqrt{ \frac{1}{T} \sum_t{ \left ( y_t - \hat{y}_t \right )^2 } }
@@ -358,7 +359,7 @@ and \left ( x^{(n)}_t = off, \hat{x}^{(n)}_t = on \right )
 FN^{(n)} = 
 \sum_{t}
 and \left ( x^{(n)}_t = on, \hat{x}^{(n)}_t = off \right )
-\end{equation}
+\end{equation}\bluecolor{make AND caps}
 \begin{equation}
 TN^{(n)} = 
 \sum_{t}
@@ -403,7 +404,7 @@ HammingLoss =
 
 
 \noindent
-In APPENDIX we summarise the NILMTK pipeline with a code snippet to illustrate the ease by which data sets can be imported and preprocessed, algorithms can be trained and used to disaggregate a household's energy usage, and accuracy metrics can be employed to evaluate their accuracy.
+In \appref{app:appendix_pipeline} we summarise the NILMTK pipeline with a code snippet to illustrate the ease by which data sets can be imported and preprocessed, algorithms can be trained and used to disaggregate a household's energy usage, and accuracy metrics can be employed to evaluate disaggregation accuracy.
 
 
 \section{Evaluation}
@@ -688,6 +689,7 @@ We observe that the performance accuracy of air conditioner 2 is much worse than
 %\subsection{Effect of sampling rate}
 
 \section{Use case study}
+\label{sec:use_case}
 We now consider two deployment scenarios where NILMTK is being used to perform disaggregation. Firstly, we consider the faculty home deployment at IIIT Delhi~\cite{batra_2012}. \redcolor{20} faculty homes have been instrumented with smart meters. Data from these homes is being aggregated into a sMAP~\cite{smap} server instance residing inside IIIT Delhi. Aggregate home data from sMAP is pulled via HTTP request and is fed into NILMTK via a converter. The aim of this experiment was to understand if rated power can suffice for disaggregating large HVAC based loads such as air conditioner and room heaters. Thus, we fed the rated power of different appliances into CO JSON model and disaggregated on the aggregate data. We found that this approach worked sufficiently well in disaggregating HVAC based loads. The second user study was a single home deployment in \redcolor{Delhi/London} where the data from the smart meter was collected using a low power \redcolor{RPi/Intel Atom}.
 
 \section{Conclusions and future work}
@@ -714,6 +716,7 @@ An additional direction for future work would be the inclusion of a household si
 \newpage
 \appendix
 \section{NILMTK-DF}
+\label{app:appendix_data_format}
 We now provide the details of NILMTK-DF. NILMTK-DF follows a hierarchical structure which models the physical hierarchies. 
 
 \begin{figure}
@@ -724,6 +727,7 @@ We now provide the details of NILMTK-DF. NILMTK-DF follows a hierarchical struct
 \end{figure}
 
 \section{Sample code for NILMTK pipeline}
+\label{app:appendix_pipeline}
 We now illustrate the NILMTK pipeline via a minimal code example.
 
 \begin{verbatim}
