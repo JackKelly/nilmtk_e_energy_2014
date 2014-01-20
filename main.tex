@@ -350,22 +350,22 @@ We now give a brief description of each metric along with its mathematical defin
 \begin{equation}
 \mathit{TP}^{(n)} = 
 \sum_{t}
-\mathrm{And} \left ( x^{(n)}_t = \mathit{on}, \hat{x}^{(n)}_t = \mathit{on} \right )
+\mathrm{AND} \left ( x^{(n)}_t = \mathit{on}, \hat{x}^{(n)}_t = \mathit{on} \right )
 \end{equation}
 \begin{equation}
 \mathit{FP}^{(n)} = 
 \sum_{t}
-\mathrm{And} \left ( x^{(n)}_t = \mathit{off}, \hat{x}^{(n)}_t = \mathit{on} \right )
+\mathrm{AND} \left ( x^{(n)}_t = \mathit{off}, \hat{x}^{(n)}_t = \mathit{on} \right )
 \end{equation}
 \begin{equation}
 \mathit{FN}^{(n)} = 
 \sum_{t}
-\mathrm{And} \left ( x^{(n)}_t = \mathit{on}, \hat{x}^{(n)}_t = \mathit{off} \right )
+\mathrm{AND} \left ( x^{(n)}_t = \mathit{on}, \hat{x}^{(n)}_t = \mathit{off} \right )
 \end{equation}
 \begin{equation}
 \mathit{TN}^{(n)} = 
 \sum_{t}
-\mathrm{And} \left ( x^{(n)}_t = \mathit{off}, \hat{x}^{(n)}_t = \mathit{off} \right )
+\mathrm{AND} \left ( x^{(n)}_t = \mathit{off}, \hat{x}^{(n)}_t = \mathit{off} \right )
 \end{equation}
 
 %tpr fpr
@@ -400,7 +400,7 @@ We now give a brief description of each metric along with its mathematical defin
 \mathit{HammingLoss} = 
         \frac{1}{T} \sum_{t}
         \frac{1}{N} \sum_{n}
-        \mathrm{Xor} \left ( x^{(n)}_t, \hat{x}^{(n)}_t \right )
+        \mathrm{XOR} \left ( x^{(n)}_t, \hat{x}^{(n)}_t \right )
 \end{equation}
 
 
@@ -413,23 +413,23 @@ In \appref{app:appendix_pipeline} we summarise the NILMTK pipeline with a code s
 \label{evaluation}
 
 \noindent
-Having introduced NILMTK in the previous section, we now demonstrate the type of analysis supported by the toolkit. First, we show how existing data sets can be processed to produce representations of the quality of data and the also to provide detail regarding the appliances present in the data set. Second, we give some examples of the effect of voltage normalisation on the power demand of individual appliances, and discuss how this might affect the performance of a disaggregation algorithm. Third, we present summary performance results of the two benchmark algorithms included in NILMTK across four data sets using a number of accuracy metrics. Fourth, we present detailed results of these algorithms for a single data set, and discuss each algorithm's performance for different appliances.
+We now demonstrate several examples of rich analysis supported by NILMTK. First, we show how existing data sets can be processed to produce representations of the quality of data and the also to provide details regarding the appliances present in the data set. Second, we give some examples of the effect of voltage normalisation on the power demand of individual appliances, and discuss how this might affect the performance of a disaggregation algorithm. Third, we present summary performance results of the two benchmark algorithms included in NILMTK across four data sets using a number of accuracy metrics. Fourth, we present detailed results of these algorithms for a single data set, and discuss each algorithm's performance for different appliances.
 
 \subsection{Summary of datasets}
-
+\bluecolor{There are too many plots in this section. If you need space this is the candidate section where you may delete. Ex. Figure 2 and Figure 5 can potentially go away.}
 \noindent
-Figure~\ref{table:dataset_results} shows a selection of statistics
+\tabref{table:dataset_results} shows a selection of statistics
 across multiple public datasets.  These statistics were calculated by
 the stats functions in NILMTK.  
 
-Figure~\ref{fig:lost_samples} shows the distribution of lost samples for REDD house 1.  From this we can see that the two mains channels have four large gaps but if we ignore these large gaps then the mains channels have a dropout rate near to zero.  The submetered channels have only one large gap but, ignoring this gap, the submetered channels have a constant dropout rate of about \redcolor{20\%}.
+Figure~\ref{fig:lost_samples} shows the distribution of lost samples for REDD house 1.  From this we can see that the two mains channels have four large gaps, but otherwise the mains have a dropout rate near to zero. The sub-metered channels have only one large gap but, ignoring this gap, the sub-metered channels have a constant dropout rate of about \redcolor{20\%}.\bluecolor{Did authors give any intuition for why there is such a constant dropout rate observed}
 
 \begin{figure}[!t]
   \centering
   \includegraphics[width=\columnwidth]{figures/lost_samples.pdf} 
   \caption{Lost samples from REDD house 1.  Light blue indicates a low
     dropout rate; dark blue indicates a high dropout rate.  The figure
-    only shows a subset of the submetered channels.}
+    only shows a subset of the submetered channels.\bluecolor{The figure is not very clear. What is the time window that you took when calculating the drop-out rate?}}
   \label{fig:lost_samples} 
 \end{figure}
 
@@ -446,9 +446,9 @@ iAWE &10 &48 & 8 & 47 &93 \\
 UKPD & 4, 12, 49 &19, 48, 82 &0, 7, 22 & 36, 102, 404 & 73, 84, 100 \\
 \hline
 \end{tabular}
-  \caption{Table of data set results calculated by the statistics
+  \caption{Summary of data set results calculated by the statistics
     functions in NILMTK.  Each cell represents the range of values
-    across all buildings per data set and per statistic.  The three
+    across all buildings per data set.  The three
     numbers per cell are the minimum, median and maximum values. AMPds
     and iAWE each contain just a single building, hence these rows
     have a single number per cell.  Large gaps in each channel were
@@ -456,7 +456,7 @@ UKPD & 4, 12, 49 &19, 48, 82 &0, 7, 22 & 36, 102, 404 & 73, 84, 100 \\
     ``percentage missing samples'' and ``mains up-time''.  (By ``gap''
     we mean any period between two samples longer than 20 $\times$ the
     sample period).  iAWE data was cropped to 2013/6/11 to
-    2013/7/31. \redcolor{todo: investigate which chans are causing two
+    2013/7/31. \bluecolor{Refer to the page on your public documentation which explains what each of these statistics really mean. Its not very obvious to me what does percentage up-time mean.} \redcolor{todo: investigate which chans are causing two
       Pecan homes to have \% energy submetered above 100\%, do
       Smart*}}
   \label{table:dataset_results}
@@ -467,7 +467,7 @@ UKPD & 4, 12, 49 &19, 48, 82 &0, 7, 22 & 36, 102, 404 & 73, 84, 100 \\
 
 \noindent
 Each appliance consumes a range of
-powers. Figure~\ref{fig:power_histograms} displays histograms of the
+powers\bluecolor{I dont know if this statement is true. An appliance may be consuming constant power but the variation could be due to voltage variation or noise in power line. You may just delete this sentence as well.}. Figure~\ref{fig:power_histograms} displays histograms of the
 distribution of powers used by a selection of appliances.  Appliances
 like toasters and kettles tend to have only two possible power states:
 on and off.  This simplicity makes them amenable to be modelled by,
@@ -478,13 +478,13 @@ have more than two power states.
 The proportion of energy use per appliance varies from country to
 country. For example, the building recorded in India for the iAWE
 dataset has two air conditioning units; whilst none of the buildings
-in UKPD have an air conditioning unit.  The differences in appliance
-energy use by country are illustrated in figure~\ref{fig:pie}.
+in UKPD have any air conditioning unit.  The differences in appliance
+energy use by country are illustrated in Figure~\ref{fig:pie}.
 
 \begin{figure*}
   \centering
   \includegraphics{figures/wm.pdf}
-  \caption{Comparing American and UK washing machines.}
+  \caption{Comparing American and UK washing machines.\bluecolor{not referred anywhere--maybe even in single column}}
   \label{fig:wm}
 \end{figure*} 
 
@@ -493,12 +493,11 @@ energy use by country are illustrated in figure~\ref{fig:pie}.
  \includegraphics{figures/top_k_appliances_pie.pdf}
  \caption{Top 5 appliances in terms of the proportion of the total
    energy used in building 1 in each of REDD (USA), iAWE (India) and
-   UKPD (UK). We summed the energy use of appliances of the same type.}
+   UKPD (UK). Energy use of multiple appliances in the same category is added.}
  \label{fig:pie}
 \end{figure*}
 
-\subsubsection{Usage patterns which could be learnt by a disaggregation
-  system}
+\subsubsection{Learning usage patterns}
 
 \noindent
 Modern automatic speech-to-text systems not only learn to map phonemes
@@ -510,12 +509,12 @@ when particular appliances are usually active each day (e.g. the TV is
 usually on in the evening), correlations between appliances (e.g. the
 office LCD screen is on when the office PC is on) and correlations
 between appliances and additional information such as weather data
-from the local meteorological office (e.g. less sunshine means more
+from the local meteorological office (e.g. less sunshine implies more
 usage of electric lights).
 
 One probabilistic learning framework capable of capturing this
 information is the Conditional Factorial Hidden Markov Model (CFHMM)
-proposed by \cite{kim_2011}, and those same authors also presented
+proposed by Kim et. al.~\cite{kim_2011}. They also presented
 several examples of such patterns.  Prior knowledge from
 public datasets could be used to create general probability
 distributions for each appliance class and these distributions could
@@ -531,15 +530,14 @@ variables; and histograms of appliance on-durations.
   \centering
   \includegraphics[width=\columnwidth]{figures/daily_usage_histograms2.pdf}
   \caption{Daily appliance usage histograms for a selection of
-    appliances.  We used a bin width of one minute.  Data from UKPD
-    building 1.}
+    appliances for data from UKPD Building 1 (bin width = 1 minute).}
   \label{fig:daily_usage_histograms}
 \end{figure} 
 
 \noindent
+\bluecolor{You may make this subsection of the previous section. Otherwise previous section as a standalong subsection does not look good. Or just give these labels without assigning them sub-sub-sub sections.}
 Histograms showing usage patterns for a selection of appliances over
-an average day are shown in figure~\ref{fig:daily_usage_histograms}.
-Strong similarities between groups of appliances can be seen.  For
+an average day are shown in Figure~\ref{fig:daily_usage_histograms} from which strong similarities between groups of appliances can be seen.  \bluecolor{Try to be consistent with what you write and what you show. Currently your examples are not what is shown in the figure.}For
 example, the usage pattern of the TV and ``amp livingroom'' are very
 similar because the amp is used to play the TV's audio but the amp is
 sometimes on without the TV.  Similarly, the kitchen lights, kettle
@@ -551,8 +549,8 @@ behaviour but the data set was recorded using UTC timestamps and the
 data set spans a daylight saving transition from GMT to BST.  As such,
 all times were converted to local time to produce these histograms.
 The use of local time has produced one artefact: the small ``bump''
-towards the right of the solar thermal pump histogram in
-figure~\ref{fig:daily_usage_histograms} (the earth's rotation does not
+towards the right of the solar thermal pump histogram\bluecolor{where is it?} in
+Figure~\ref{fig:daily_usage_histograms} (the earth's rotation does not
 alter in response to day light saving transitions!).
 
 \subsubsection{Correlations with weather}
@@ -561,8 +559,8 @@ alter in response to day light saving transitions!).
 We expect the usage of some appliances to be correlated with some
 weather variables.  Previous studies have demonstrated correlations
 between temperature and heating/cooling demand in
-Australia\cite{RicharddeDear2002} and between temperature and total
-household electricity usage in America \cite{Kavousian2013a}.  We
+Australia~\cite{RicharddeDear2002} and between temperature and total
+household electricity usage in America~\cite{Kavousian2013a}.  We
 wanted to search for similar correlations.
 
 If robust correlations can be demonstrated then a disaggregation
@@ -593,7 +591,7 @@ which is not explained by solar radiation.
     Heathrow weather station (20 miles west of UKPD building 1) were
     obtained from the UK Met Office under their Educational program.
     Days when the appliance usage was zero were ignored because
-    we assume that the house was unoccupied on these days.}
+    we assume that the house was unoccupied on these days.\bluecolor{make figure x and ylabels c; reduce caption}}
   \label{fig:weather_correlations} 
 \end{figure}
 
@@ -601,17 +599,17 @@ which is not explained by solar radiation.
 \subsection{Voltage normalisation} % more formal
 
 \noindent
-Mains voltage is not constant.  In the UK, for example, it is nominally 230\;V but is allowed to vary by
-$-6\%,\;{+10}\%$.  This variation in voltage can produce a variation in power consumption of -12\% to +20\% in linear loads like resistive heaters because $P=I \times V$ and because current changes with voltage
+Mains voltage usually fluctuates around the nominal value. In the UK, for example, it is nominally 230\;V but is allowed to vary by
+$-6\%,\;{+10}\%$.  This variation in voltage can produce a variation in power consumption of -12\% to +20\% \bluecolor{confirm this once}in linear loads like resistive heaters because $P=I \times V$ and because current changes with voltage
 for resistive loads according to Ohm's law ($I=\sfrac{V}{R}$).
 These abrupt changes in reported power due to voltage fluctuations can be
-problematic for disaggregation algorithms.  The mitigate this effect, we can normalise the power consumption, as outlined in section \ref{sec:preprocessing}.
+problematic for disaggregation algorithms.  To mitigate this effect, we can normalise the power consumption, as outlined in Section \ref{sec:preprocessing}.
 
 Figure~\ref{fig:power_histograms} shows
 histograms for both the normalised and un-normalised appliance power
 consumption. Normalisation produces a noticeably tighter power
 distribution for linear resistive devices such as the toaster but has
-little effect on constant power appliances such as TVs whose power consumption does
+little effect on constant power appliances such as TVs\bluecolor{TV is not shown in Figure 7. Give examples of something that you show or vice versa.} whose power consumption does
 not vary significantly as voltage varies because their power supplies are designed to draw the same power across the permissible voltage range.
 
 \begin{figure*}[!t]
@@ -621,20 +619,20 @@ not vary significantly as voltage varies because their power supplies are design
     histograms of ``normalised power''.  The thin, grey,
     semi-transparent lines drawn over the filled plots show histograms
     of un-normalised power.  The ``air conditioning'' data is from
-    iAWE, the ``washer dryer'' and ``toaster'' are from UKPD building 1.}
+    iAWE, the ``washer dryer'' and ``toaster'' are from UKPD building 1. \bluecolor{Explain why AC is not good..}}
   \label{fig:power_histograms} 
 \end{figure*}
 
 \subsection{Disaggregation across datasets}
 
 \noindent
-We now compare the disaggregation results across the first home of each of the following \redcolor{X} datasets: AMPds, PECAN, iAWE, Smart*, UKPD and REDD. Since all the datasets were collected for different durations, we used fist half the samples for training and remaining half for testing across all the datasets. Further, we preprocessed datasets such as REDD, UKPD and iAWE to 1 minute frequency using the downsampling filter to account for different aggregate and mains data sampling frequencies and compensating for intermittent lost data packets. 
-As highlighted above, REDD and iAWE also have significant proportion of missing data, which were appropriately preprocessed. AMPds and PECAN data did not require any preprocessing. Apart from REDD, Smart*, UKPD and iAWE, the remaining datasets were processed at the frequency at which they were made available (i.e.\ PECAN - 1 minute, AMPds - 1 minute). Since both CO and FHMM have exponential computational complexity in the number of appliances, we consider only those appliances whose contribution was greater than 5\%. Across all the datasets, the appliances which contribute more than 5\% of the aggregate include HVAC appliances such as the air conditioner and thermostats, and appliances which are used throughout the day such as the refrigerator. We compare the disaggregation performance of CO and FHMM across the following three metrics: 1) Fraction of total energy assigned correctly (FTE), 2) Normalised error in assigned power (NEP), 3) F-score. These three metrics and their variations have been used most often in previous work. %The results are summarised in \tabref{table:disaggregation}.
+We now compare the disaggregation results across the first home of each of the following 6 datasets: AMPds, PECAN, iAWE, Smart*, UKPD and REDD. Since all the datasets were collected for different durations, we used fist half the samples for training and remaining half for testing across all the datasets. Further, we preprocessed datasets such as REDD, UKPD and iAWE to 1 minute frequency using the downsampling filter to account for different aggregate and mains data sampling frequencies and compensating for intermittent lost data packets. 
+As highlighted above, REDD and iAWE also have significant proportion of missing data, which were appropriately preprocessed. AMPds and PECAN data did not require any preprocessing. Apart from REDD, Smart*, UKPD and iAWE, the remaining datasets were processed at the frequency at which they were made available (i.e.\ PECAN - 1 minute, AMPds - 1 minute). Since both CO and FHMM have exponential computational complexity in the number of appliances, we consider only those appliances whose contribution was greater than 5\%. Across all the datasets, the appliances which contribute more than 5\% of the aggregate include HVAC appliances such as the air conditioner and thermostats, and appliances which are used throughout the day such as the refrigerator. We compare the disaggregation performance of CO and FHMM across the following three metrics: 1) Fraction of total energy assigned correctly (FTE), 2) Normalised error in assigned power (NEP), 3) F-score. These three metrics and their variations have been used most often in prior NILM work. %The results are summarised in \tabref{table:disaggregation}.
 A lower NEP indicates better performance, while in contrast a higher F-score and FTE indicate better disaggregation accuracy. The evaluation was performed on a laptop having 2.3 GHz i7 processor and 8 GB RAM running Linux.
 
 %Table~\tabref{table:disaggregation} summarises the results of the two algorithms across the four data sets. It can be seen that across all the metrics, CO performance is similar to FHMM performance in iAWE and PECAN. In both the used homes from these two datasets, space heating contributes very significantly (about 60\% for a single air conditioner which has a power draw of ~2700 W in the PECAN home and about \redcolor{40\%} across two air conditioner having a power draw of ~1700W and ~1200W respectively. These appliances are easier to disaggregate owing to their huge power demand in comparison to appliances such as electronics and lighting. However, in the first homes used from REDD and AMPds dataset, the power consumption is spread across a lot more number of appliances. A significant number of appliances (14 in AMPds home and 13 in REDD) each contribute less than 5\% of the total load. Under such circumstances, it can be observed that FHMM performance is superior to CO performance across the three metrics. This confirms the theoretical foundations propounded by Hart et al.\cite{hart_1992}; that CO is highly sensitive to small variations in the aggregate load. In contrast, FHMM overcomes these by considering an associated transition probability between states. We further discuss 
 
-\tabref{table:disaggregation} summarises the results of the two algorithms across the four data sets. It can be observed that FHMM performance is superior to CO performance across the three metrics for both REDD and AMPds. This confirms the theoretical foundations proposed by Hart~\cite{hart_1992}; that CO is highly sensitive to small variations in the aggregate load. FHMM approach overcomes these shortcoming by considering an associated transition probability between the different states of an appliance. However, it can be seen that CO performance is similar to FHMM performance in iAWE, PECAN, Smart* and UKPD across all metrics. This is likely due to the fact that in used homes from these datasets, very few appliances contribute more than 5\% of the aggregate. For instance, space heating contributes very significantly (about 60\% for a single air conditioner which has a power draw of ~2700 W in the PECAN home and about 35\% across two air conditioner having a power draw of ~1800W and ~1600W respectively). As a result, these appliances are easier to disaggregate by both algorithms, owing to their relatively high power demand in comparison to appliances such as electronics and lighting. Whereas, in the UKPD home, washing machine was one of the appliance contributing more than 5\% of the aggregate, which brought down overall metrics across both approaches. 
+\tabref{table:disaggregation} summarises the results of the two algorithms across the four data sets. It can be observed that FHMM performance is superior to CO performance across the three metrics for both REDD and AMPds. This confirms the theoretical foundations proposed by Hart~\cite{hart_1992}; that CO is highly sensitive to small variations in the aggregate load. FHMM approach overcomes these shortcoming by considering an associated transition probability between the different states of an appliance. However, it can be seen that CO performance is similar to FHMM performance in iAWE, PECAN, Smart* and UKPD across all metrics. This is likely due to the fact that in selected homes from these datasets, very few appliances contribute more than 5\% of the aggregate. For instance, space heating contributes very significantly (about 60\% for a single air conditioner which has a power draw of ~2700 W in the PECAN home and about 35\% across two air conditioner having a power draw of ~1800W and ~1600W respectively). As a result, these appliances are easier to disaggregate by both algorithms, owing to their relatively high power demand in comparison to appliances such as electronics and lighting. Whereas, in the UKPD home, washing machine was one of the appliance contributing more than 5\% of the aggregate, which brought down overall metrics across both approaches. 
 %However, in the first homes used from REDD and AMPds dataset, the power consumption is spread across a lot more number of appliances. A significant number of appliances (14 in AMPds home and 13 in REDD) each contribute less than 5\% of the total load. Under such circumstances,  
 
 Another important aspect to consider is the time required for testing and training. These timings confirm the fact that CO is exponentially quicker than FHMM. This raises an interesting insight: In homes such as the ones used from PECAN and iAWE in the above analysis, it may be beneficial to use CO over a FHMM owing to the less amount of time required for training and testing, even though FHMMs are in general considered to be more powerful.
@@ -652,11 +650,11 @@ iAWE &1.68 &8.90 &0.07 &0.38 &0.91 &0.91 &0.89 &0.89 &0.73 &0.73\\
 UKPD &1.06 &11.42 &0.10 &0.52 &3.66 &3.67 &0.81 &0.80 &0.38 &0.38\\
 \hline
 \end{tabular}
-\caption{Comparison of CO and FHMM across multiple datasets}
+\caption{Comparison of CO and FHMM across multiple datasets\bluecolor{Can you also mention number and possibly name as well of appliances disaggregated for each dataset?}}
 \label{table:disaggregation}
 \end{table*}
 
-\subsection{Detailed disaggregation results for a single dataset}
+\subsection{Detailed disaggregation results	}
 
 
 \begin{table}
@@ -684,15 +682,15 @@ UKPD &1.06 &11.42 &0.10 &0.52 &3.66 &3.67 &0.81 &0.80 &0.38 &0.38\\
 \noindent
 Having compared disaggregation results across different datasets, we now do a detailed discussion of disaggregation results across different appliances for a single home in the iAWE dataset in \tabref{table:disaggregation_iawe}. As before, we model all appliances using 2 states. In order to show the disagregation performance across appliances, we choose the top 6 appliances by their energy consumption. We observe that CO and FHMM report similar performance across all the appliances. We observe that across both metrics results for appliances such as washing machine and SMPS based appliances such as laptop and entertainment unit(television) are much worse when compared to HVAC loads like air conditioners. It is well known in prior literature that appliances such as washing machines are hard to model~\cite{barker_2013}.
 
-We observe that the performance accuracy of air conditioner 2 is much worse than air conditioner 1. This is due to the fact that during the instrumentation, air conditioner 2 was operated at a set temperature of $26\,^{\circ}\mathrm{C}$. With external temperature roughly $5-10\,^{\circ}\mathrm{C}$ below this set temperature, this air conditioner reached the set temperature quickly and turned off the compressor while still running the fan. However, air conditioner 1 was operated at operated at $16\,^{\circ}\mathrm{C}$ and mostly had the compressor on. Thus, air conditioner 2 spent much more time in this intermediate state (compressor off, fan on) in comparison to air conditioner 1. \figref{fig:ac_disaggregation} shows how both FHMM and CO are able to detect on and off events of air conditioner 2. Since air conditioner 2 spent considerable amount of time in the intermediate state, the learnt 2 state model is less appropriate in comparison to the 2 state model used for air conditioner 1. This can be further seen in \figref{fig:ac_disaggregation}, where we observe that both FHMM and CO learn a much lesser power level of around 1100 W, in comparison to the rated power of around 1600 W. We believe that this can be corrected by choosing a more appropriate 3 state model for this air conditioner, which comes at a cost of increased training and disaggregation computational and memory requirements. The air conditioner set temperature details quoted above were provided by the iAWE authors as a part of appliance metadata in their dataset release.
+We observe that the performance accuracy of air conditioner 2 is much worse than air conditioner 1. This is due to the fact that during the instrumentation, air conditioner 2 was operated at a set temperature of $26\,^{\circ}\mathrm{C}$. With external temperature roughly $5-10\,^{\circ}\mathrm{C}$ below this set temperature, this air conditioner reached the set temperature quickly and turned off the compressor while still running the fan. However, air conditioner 1 was operated at operated at $16\,^{\circ}\mathrm{C}$ and mostly had the compressor on. Thus, air conditioner 2 spent much more time in this intermediate state (compressor off, fan on) in comparison to air conditioner 1. \figref{fig:ac_disaggregation} shows how both FHMM and CO are able to detect on and off events of air conditioner 2. Since air conditioner 2 spent considerable amount of time in the intermediate state, the learnt 2 state model is less appropriate in comparison to the 2 state model used for air conditioner 1. This can be further seen in \figref{fig:ac_disaggregation}, where we observe that both FHMM and CO learn a much lesser power level of around 1100 W, in comparison to the rated power of around 1600 W.\bluecolor{Why are you able to detect cycles more accurately after 30 minutes and not before 30 minutes?} We believe that this can be corrected by choosing a more appropriate 3 state model for this air conditioner, which comes at a cost of increased training and disaggregation computational and memory requirements. The air conditioner set temperature details quoted above were provided by the iAWE authors as a part of appliance metadata in their dataset release.
 
 
 
 %\subsection{Effect of sampling rate}
 
-\section{Use case study}
+\section{Case Studies}
 \label{sec:use_case}
-We now consider two deployment scenarios where NILMTK is being used to perform disaggregation. Firstly, we consider the faculty home deployment at IIIT Delhi~\cite{batra_2012}. \redcolor{20} faculty homes have been instrumented with smart meters. Data from these homes is being aggregated into a sMAP~\cite{smap} server instance residing inside IIIT Delhi. Aggregate home data from sMAP is pulled via HTTP request and is fed into NILMTK via a converter. The aim of this experiment was to understand if rated power can suffice for disaggregating large HVAC based loads such as air conditioner and room heaters. Thus, we fed the rated power of different appliances into CO JSON model and disaggregated on the aggregate data. We found that this approach worked sufficiently well in disaggregating HVAC based loads. The second user study was a single home deployment in \redcolor{Delhi/London} where the data from the smart meter was collected using a low power \redcolor{RPi/Intel Atom}.
+We now consider two deployment scenarios where NILMTK is being used to perform disaggregation. Firstly, we consider the faculty housing deployment at IIIT Delhi~\cite{batra_2012}. 26 apartments have been instrumented individually with smart meters. Data from these homes is being aggregated into a sMAP~\cite{smap} server instance residing inside IIIT Delhi. Aggregate home data from sMAP is pulled via HTTP request and is fed into NILMTK via a converter. The aim of this experiment was to understand if rated power can suffice for disaggregating large HVAC based loads such as air conditioner and room heaters. Thus, we fed the rated power of different appliances into CO JSON model and disaggregated on the aggregate data. We found that this approach worked sufficiently well in disaggregating HVAC based loads\bluecolor{may include a plot or remove the section completely}. The second user study was a single home deployment in \redcolor{Delhi/London} where the data from the smart meter was collected using a low power \redcolor{RPi/Intel Atom}.
 
 \section{Conclusions and future work}
 \label{sec:conclusions}
