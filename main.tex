@@ -27,7 +27,8 @@
 \newcommand{\specialcell}[2][c]{%
   \begin{tabular}[#1]{@{}c@{}}#2\end{tabular}}
 
-\usepackage{xcolor,colortbl}
+\usepackage{xcolor}
+\usepackage{colortbl}
 \usepackage{xfrac}
 
 \title{NILMTK: An Open Source Toolkit for Non-intrusive Load Monitoring}
@@ -39,7 +40,7 @@
 %	Jack Kelly\imperial, 
 %	Oliver Parson\southampton, 
 %	Haimonti Dutta\iiitd,
-%	William Knottenbelt\imperial,
+%	William Knottenbelt\imperial, 
 %	Alex Rogers\southampton,
 %	Amarjeet Singh\iiitd,
 %	Mani B. Srivastava\ucla
@@ -524,9 +525,9 @@ energy use by country are illustrated in Figure~\ref{fig:pie}.
 \label{sec:usage_hist}
 \begin{figure}[!t]
   \centering
-  \includegraphics[width=\columnwidth]{figures/daily_usage_histograms2.pdf}
+  \includegraphics[width=\columnwidth]{figures/daily_usage_histograms3.pdf}
   \caption{Daily appliance usage histograms for a selection of
-    appliances for data from UKPD Building 1 (bin width = 1 minute).}
+    appliances for data from UKPD Building 1.}
   \label{fig:daily_usage_histograms}
 \end{figure} 
 
@@ -590,7 +591,7 @@ histograms for both the normalised and un-normalised appliance power
 consumption. Normalisation produces a noticeably tighter power
 distribution for linear resistive devices such as the toaster, although it has
 little effect on constant power appliances, such as the washer dryer\bluecolor{Isn't it only visible because toaster is zoomed in?}.  \bluecolor{Explain why AC is not good.}
-
+ 
 \begin{figure*}[!t]
   \centering
   \includegraphics{figures/power_histograms.pdf} 
