@@ -27,7 +27,7 @@
   journal={Proceedings of the IEEE},
   volume={80},
   number={12},
-
+  pages = {1870--1891},
   year={1992},
   publisher={IEEE}
 }
@@ -43,10 +43,10 @@
 
 @inproceedings{ampds,
 	Author = {Stephen Makonin and Fred Popowich and Lyn Bartram and Bob Gill and Ivan V. Bajic},
-	Booktitle = {Electrical Power and Energy Conference (EPEC), 2013 IEEE},
+	Booktitle = {IEEE Electrical Power and Energy Conference},
 	Date-Added = {2013-06-09 16:27:19 +0000},
 	Date-Modified = {2013-06-17 23:42:14 +0000},
-
+	address = {Halifax, NS, Canada},
 	Title = {{AMPds: A Public Dataset for Load Disaggregation and Eco-Feedback Research}},
 	Year = {2013}}
 	
@@ -62,7 +62,7 @@
   title={Pecan Street Inc.: A Test-bed for NILM},
   author={Holcomb, C.},
   booktitle={International Workshop on Non-Intrusive Load Monitoring},
-
+  address = {Pittsburgh, PA, USA},
   year={2012}
 }
 
@@ -70,11 +70,12 @@
   title={Smart*: An open data set and tools for enabling research in sustainable homes},
   author={Barker, Sean and Mishra, Aditya and Irwin, David and Cecchet, Emmanuel and Shenoy, Prashant and Albrecht, Jeannie},
   booktitle={The 1st KDD Workshop on Data Mining Applications in Sustainability (SustKDD)},
-  year={2011}
+  year={2011},
+  address = {Beijing, China},
 }
 
 @inproceedings{blued,
-  title={BLUED: a fully labeled public dataset for Event-Based Non-Intrusive load monitoring research},
+  title={BLUED: A fully labeled public dataset for Event-Based Non-Intrusive load monitoring research},
   author={Anderson, Kyle and Ocneanu, Adrian and Benitez, Diego and Carlson, Derrick and Rowe, Anthony and Berg{\'e}s, Mario},
   booktitle={Proceedings of the 2nd KDD Workshop on Data Mining Applications in Sustainability, Beijing, China},
   pages={12--16},
@@ -85,7 +86,8 @@
   title={REDD: A public data set for energy disaggregation research},
   author={Kolter, J Zico and Johnson, Matthew J},
   booktitle={proceedings of the SustKDD workshop on Data Mining Applications in Sustainability},
-  year={2011}
+  year={2011},
+  address = {San Diego, CA, USA},
 }
 
 @inproceedings{tracebase,
@@ -94,6 +96,23 @@
 	year = {2012},
 	booktitle = {Proceedings of the 2nd IFIP Conference on Sustainable Internet and ICT for Sustainability (SustainIT)},
 	pages = {1--9},
+}
+
+%TODO: replace this with Scientific Data citation, if it is accepted
+@misc{ukpd,
+title = {Smart Meter Disaggregation: Data Collection \& Analysis},
+author = {Kelly, J. and Knottenbelt, W.},
+howpublished = {Poster at UK Energy Research Council Summer School},
+year = 2013
+}
+
+@techreport{hes, 
+  author={Jean-Paul Zimmermann and Matt Evans and Jonathan Griggs and Nicola King and Les Harding and Penelope Roberts and Chris Evans}, 
+  title={Household Electricity Survey. A study of domestic electrical product usage},
+  number={R66141},
+  institution={DEFRA},
+  month={May},
+  year={2012}
 }
 
 @article{zeifman_2011,
@@ -155,7 +174,6 @@ doi = {10.1109/TCE.2012.6170051},
 issn = {0098-3063},
 journal = {IEEE Transactions on Consumer Electronics},
 keywords = {appliance model system,appliances overlapping tuplet,disaggregation electricity consumption,display devices,display whole-home electricity consumption data,domestic appliances,energy conservation,energy management systems,energy saving potential,home energy display data disaggregation algorithm,home energy management device,modified Viterbi algorithm,power consumption,power draw,probabilistic approach,probability},
-month = feb,
 number = {1},
 pages = {23--31},
 title = {{Disaggregation of home energy display data using probabilistic approach}},
@@ -190,7 +208,6 @@ year = {2012}
 @inproceedings{rahayu_2012,
 author = {Rahayu, Dwi and Narayanaswamy, Balakrishnan and Krishnaswamy, Shonali and Labbe, Cyril and Seetharam, Deva P},
 booktitle = {Future Energy Systems: Where Energy, Computing and Communication Meet (e-Energy), 2012 Third International Conference on},
-month = may,
 pages = {1--4},
 title = {{Learning to be energy-wise: Discriminative methods for load disaggregation}},
 year = {2012}
@@ -215,7 +232,7 @@ year = {2012}
 
 @INPROCEEDINGS{anderson_2012, 
 author={Anderson, K.D. and Berges, M.E. and Ocneanu, A. and Benitez, D. and Moura, J.M.F.}, 
-booktitle={IECON 2012 - 38th Annual Conference on IEEE Industrial Electronics Society}, 
+booktitle={Proceedings of 38th Annual Conference on IEEE Industrial Electronics Society}, 
 title={Event detection for Non Intrusive load monitoring}, 
 year={2012}, 
 pages={3312-3317}, 
@@ -227,28 +244,11 @@ ISSN={1553-572X},}
 title = {GraphLab: A New Parallel Framework for Machine Learning},
 author = {Yucheng Low and Joseph Gonzalez and Aapo Kyrola and Danny Bickson and Carlos Guestrin and Joseph M. Hellerstein},
 booktitle = {Conference on Uncertainty in Artificial Intelligence (UAI)},
-month = {July},
 year = {2010},
-address = {Catalina Island, California},
+address = {Catalina Island, CA, USA},
 wwwfilebase = {uai2010-low-gonzalez-kyrola-bickson-guestrin-hellerstein},
 wwwtopic = {Parallel Learning},
 }
-
-@article{scikit-learn,
- author = {Pedregosa, Fabian and Varoquaux, Ga\"{e}l and Gramfort, Alexandre and Michel, Vincent and Thirion, Bertrand and Grisel, Olivier and Blondel, Mathieu and Prettenhofer, Peter and Weiss, Ron and Dubourg, Vincent and Vanderplas, Jake and Passos, Alexandre and Cournapeau, David and Brucher, Matthieu and Perrot, Matthieu and Duchesnay, \'{E}douard},
- title = {Scikit-learn: Machine Learning in Python},
- journal = {J. Mach. Learn. Res.},
- issue_date = {2/1/2011},
- volume = {12},
- month = nov,
- year = {2011},
- issn = {1532-4435},
- pages = {2825--2830},
- numpages = {6},
- url = {http://dl.acm.org/citation.cfm?id=1953048.2078195},
- acmid = {2078195},
- publisher = {JMLR.org},
-} 
 
 @inproceedings{kim_2011,
 address = {Mesa, AZ, USA},
@@ -315,7 +315,6 @@ author = {{Richard de Dear} and {Melissa Hart}},
 institution = {Sustainable Energy Group, Australian Greenhouse Office},
 keywords = {Folder - academic, patents, reports,weather-correlation},
 mendeley-tags = {Folder - academic, patents, reports,weather-correlation},
-month = jan,
 pages = {69},
 title = {{Appliance Electricity End-Use: Weather and Climate Sensitivity}},
 url = {http://www.energyrating.com.au/library/pubs/hartweather-2002.pdf},
@@ -330,27 +329,21 @@ issn = {03605442},
 journal = {Energy},
 keywords = {behavioral determinants of energy consumption,data-driven energy efficiency,factor analysis,smart meter data analysis,stepwise regression,structural determinants of energy consumption,weather-correlation},
 mendeley-tags = {weather-correlation},
-month = may,
 title = {{Determinants of residential electricity consumption: Using smart meter data to examine the effect of climate, building characteristics, appliance stock, and occupants' behavior}},
 url = {http://dx.doi.org/10.1016/j.energy.2013.03.086},
-year = {2013}
+year = {2013},
+volume = "55",
+number = "0",
+pages = "184 - 194",
 }
 
 @inproceedings{barker_2013,
   title={Empirical characterization and modeling of electrical loads in smart homes},
   author={Barker, Sean and Kalra, Sandeep and Irwin, David and Shenoy, Prashant},
-  booktitle={Green Computing Conference (IGCC), 2013 International},
+  booktitle={International Green Computing Conference},
   pages={1--10},
   year={2013},
   organization={IEEE}
-}
-
-%TODO: replace this with Scientific Data citation, if it is accepted
-@misc{ukpd,
-title = {Smart Meter Disaggregation: Data Collection \& Analysis},
-author = {Kelly, J. and Knottenbelt, W.},
-howpublished = {Poster at UK Energy Research Council Summer School},
-year = 2013
 }
 
 @INPROCEEDINGS{batra_2012, 
