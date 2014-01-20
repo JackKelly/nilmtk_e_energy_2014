@@ -257,7 +257,7 @@ the loss of a small number of radio transmissions from a wireless sensor. Howeve
 %(in which case the appliance state is unknown) or switched off (along with the attached appliance).  
 To help diagnose these issues, NILMTK provides the following four functions\bluecolor{You may again refer to the specific section in your released documentation that talks about these 4 functions. 
 At some point earlier - you may mention that detailed documentation is released and give the hyperlink. You may also mention that throughout the paper you will refer to specific sections of this documentation that provide further detail for the interested reader.}: a function to calculate the proportion of samples which are missing across an entire data set, %(with the option to either include or exclude large gaps)
-a function to plot the dropout rate over time, a function to get the total sensor up-time and a function to get the boundaries of complete sections of data. %\bluecolor{Again, too verbose description of functions to calculate statistics. Can be easily explained succinctly.}
+a function to plot the dropout rate over time, a function to compute total sensor up-time and a function to compute contiguous sections of data. %\bluecolor{Again, too verbose description of functions to calculate statistics. Can be easily explained succinctly.}
 
 NILMTK also provides functions for exploring appliance usage.  For example, the toolkit can calculate the distribution of appliance usage over repeating time periods, correlations between an appliance and weather conditions or across appliances, and the distributions of appliance power demands, on-durations and off-durations.  Furthermore, to explore the proportion of aggregate data which has been sufficiently sub-metered, NILMTK provides functions to calculate the proportion of time slices where a minimum percentage of the total energy has been sub-metered and also produces a list of the top-$k$ appliances across the time slices.
 
@@ -265,7 +265,7 @@ NILMTK also provides functions for exploring appliance usage.  For example, the 
 \label{sec:preprocessing}
 
 \noindent
-The data sets described in \tabref{table:datasets} have been collected with a range of hardware, and under different settings.The sampling frequency of appliance monitors varies from 1 second to 2 minutes across the data sets.  NILMTK provide filters to down-sample data sets at a specified frequency. Further, these data sets have been collected from different countries, where the voltage fluctuations vary widely. Batra et al. showed voltage fluctuations from 180-250~V in the iAWE data set collected in India~\cite{iawe}, while the voltage variation in the SMART* data set is in the range 118-123~V. Hart et al.\ showed the need to factor these voltage fluctuations as they can significantly impact power draw~\cite{hart_1992}. Therefore, we also add a voltage normalisation function defined as follows: 
+The data sets described in \tabref{table:datasets} have been collected with a range of hardware, and under different settings.The sampling frequency of appliance monitors varies from 1 second to 2 minutes across the data sets.  NILMTK provide filters to down-sample data sets at a specified frequency. Further, these data sets have been collected from different countries, where the voltage fluctuations vary widely. Batra et al. showed voltage fluctuations from 180-250~V in the iAWE data set collected in India~\cite{iawe}, while the voltage variation in the SMART* data set is in the range 118-123~V. Hart et al.\ showed the need to take into account these voltage fluctuations as they can significantly impact power draw~\cite{hart_1992}. Therefore, as suggested by Hart, we also add a voltage normalisation function defined as follows: 
 \begin{equation}
 \textit{Power}_{\textit{normalised}} = 
 \left(\frac{\textit{Voltage}_{\textit{nominal}}}{\textit{Voltage}_{\textit{observed}}}\right)^2 
@@ -273,12 +273,12 @@ The data sets described in \tabref{table:datasets} have been collected with a ra
 \end{equation}
 %Figure \redcolor{X} shows the power draw of an air conditioner, before and after voltage normalisation.
 
-As explained in \secref{sec:training}, the memory required by some NILM algorithms is exponential in the number of appliances. Thus, when high number of appliances are considered, a single centralized model may not fit into memory, thus motivating the need for distributed algorithms. This necessitates the need to filter out top-$k$ appliances by their contribution which can be in terms of either energy or power.  We also created preprocessing functions for fixing other common issues with these datasets, such as 1) filling small periods of missing data when appliance sensors did not report readings; 2) filtering out implausible values (such as readings where observed voltage is more than twice the rated voltage) and 3) filtering out appliance data when mains data is missing.
+As explained in \secref{sec:training}, the memory required by some NILM algorithms is exponential in the number of appliances. Thus, when high number of appliances are considered, a single centralized model may not fit into memory, thus motivating the need for distributed algorithms. This necessitates the need to include top-$k$ appliances by their contribution which can be in terms of either energy or power.  We also created preprocessing functions for fixing other common issues with these datasets, such as 1) interpolating small periods of missing data when appliance sensors did not report readings; 2) filtering out implausible values (such as readings where observed voltage is more than twice the rated voltage) and 3) filtering out appliance data when mains data is missing.
 
 \subsection{Training and Disaggregation}
 \label{sec:training}
 \noindent
-NILMTK provides implementations of two common benchmark NILM algorithms: combinatorial optimisation (CO) and factorial hidden Markov model (FHMM). CO was proposed by Hart in his seminal work~\cite{hart_1992}, while techniques based on extensions of the FHMMs have been proposed recently\bluecolor{add some citations}. The aim of the inclusion of these algorithms is not to present state-of-the-art disaggregation results, but instead to enable new approaches to be compared to well studied benchmark algorithms without requiring the reimplementation of such algorithms. We now briefly describe these two algorithms\bluecolor{may define NILM problem here}.
+NILMTK provides implementations of two common benchmark NILM algorithms: combinatorial optimisation (CO) and factorial hidden Markov model (FHMM). CO was proposed by Hart in his seminal work~\cite{hart_1992}, while techniques based on extensions of the FHMMs have been proposed recently\bluecolor{add some citations}. The aim of the inclusion of these algorithms is not to present state-of-the-art disaggregation results, but instead to enable new approaches to be compared to well-studied benchmark algorithms without requiring the reimplementation of such algorithms. We now briefly describe these two algorithms\bluecolor{may define NILM problem here}.
 %It should be highlighted that the intended purpose of these algorithms is only to serve as benchmarks. We do not claim these to give the best results. We would encourage the community to get involved and submit their algorithms to NILMTK. 
 
 \textbf{Combinatorial Optimisation:}
@@ -292,20 +292,22 @@ Since each time slice is considered as a separate optimisation problem, each tim
 %CO assumes time samples to be independent and identically distributed (iid). 
 CO resembles the subset sum problem and thus is NP-complete. The complexity of disaggregation for $T$ time slices is $O(TK^N)$, where $N$ is the number of appliances and $K$ is the number of states for each appliance. With the complexity of CO being exponential in the number of appliances, the approach is only computationally tractable when a small number of appliances are modelled.
 
-\textbf{Factorial Hidden Markov Model:} The power demand of each appliance can be modelled as the observed value of a Gaussian Hidden Markov Model (HMM). The hidden component of these HMMs are the states of the appliances. Energy disaggregation involves jointly decoding the power draw of $n$ appliances and hence a factorial HMM~\cite{fhmm} is well suited. A FHMM can be represented by an equivalent HMM in which each state corresponds to a different combination of states of each appliance. The complexity of disaggregation for such a model is $O(TK^{2N})$, and as a result FHMMs scale even worse than CO. Such a FHMM model has three parameters: i) prior probability ($\pi$) containing $K^N$ entries, ii) transition matrix ($A$) containing $K^N~*K^N$ or $K^{2N}$ entries, and iii) emission matrix ($B$) containing $2K^N$ entries. From an implementation perspective, even storing (or computing) $A$ for 14 appliances with 2 states each needs 8 GB of RAM. Hence, we propose to validate FHMMs on preprocessed data where either top-k appliances are considered, or appliances contributing less than a threshold are discarded.
+\textbf{Factorial Hidden Markov Model:} The power demand of each appliance can be modelled as the observed value of a Gaussian Hidden Markov Model (HMM). The hidden component of these HMMs are the states of the appliances. Energy disaggregation involves jointly decoding the power draw of $n$ appliances and hence a factorial HMM~\cite{fhmm} is well suited. A FHMM can be represented by an equivalent HMM in which each state corresponds to a different combination of states of each appliance. The complexity of disaggregation for such a model is $O(TK^{2N})$, and as a result FHMMs scale even worse than CO. Such a FHMM model has three parameters: i) prior probability ($\pi$) containing $K^N$ entries, ii) transition matrix ($A$) containing $K^N~*K^N$ or $K^{2N}$ entries, and iii) emission matrix ($B$) containing $2K^N$ entries. From an implementation perspective, even storing (or computing) $A$ for 14 appliances with 2 states each needs 8 GB of RAM. Hence, we propose to validate FHMMs on preprocessed data where either top-$k$ appliances are considered, or appliances contributing less than a threshold are discarded.
 
-For certain algorithms like FHMMs, modeling relationship amongst consecutive samples is necessary. Thus, NILMTK provides facilities for dividing data into train and test while still maintaining the notion of time.
+For certain algorithms like FHMMs, modeling relationships amongst consecutive samples is necessary. Thus, NILMTK provides facilities for dividing data into train and test while still maintaining the notion of time.
 \subsection{Model Import and Export}
 
 %\redcolor{I think the argument here should be: benchmark algos require sub-metered data -> sub-metered data is not available in real deployments -> recent training methods have been proposed which do not require sub-metered data -> need an interface between training and disag to support different training methods}
 
 \noindent
-Recently, a lot of interest has arisen in deploying live NILM systems, as evidenced by the many startup companies (e.g.\ Energy Aware, PlotWatt, Bidgely, etc.) currently aiming to provide disaggregated consumption feedback to end consumers. Application of recent NILM algorithms proposed in academic research for live disaggregation is hindered by their primary suitability for offline statical analysis of fixed data sets. Motivated by reducing the barrier from offline algorithms to those suitable for live deployments, we developed the Model module in NILMTK which encapsulates the results of the training module required by the disaggregation module. It is the responsibility of the model developer to create export and import functions to interface with a JSON file. NILMTK currently includes importers and exporters for both the FHMM and CO approaches. Further, in \secref{sec:use_case}, we show how if the rated power is known, we can avoid learning on sub-metered data. At the time of deployment, this learnt JSON model can be easily imported and used for disaggregation.
+Recently, a lot of interest has arisen in deploying live NILM systems, as evidenced by the many startup companies (e.g.\ Energy Aware, PlotWatt, Bidgely, etc.) currently aiming to provide disaggregated consumption feedback to end consumers. Application of recent NILM algorithms proposed in academic research for live disaggregation is hindered by their primary suitability for offline statistical analysis of fixed data sets. Motivated by reducing the barrier from offline algorithms to those suitable for live deployments, we developed the Model module in NILMTK which encapsulates the results of the training module required by the disaggregation module. It is the responsibility of the model developer to create export and import functions to interface with a JSON file. NILMTK currently includes importers and exporters for both the FHMM and CO approaches. Further, in \secref{sec:use_case}, we show how if the rated power is known, we can avoid learning on sub-metered data. At the time of deployment, this learnt JSON model can be easily imported and used for disaggregation.
 
 \subsection{Accuracy Metrics}
 
 \noindent
-As discussed in \secref{sec:related}, a range of accuracy metrics are required due to the diversity of application areas of energy disaggregation approaches. To satisfy this requirement, NILMTK provides a set of standard metrics. This will allow researchers to evaluate different energy disaggregation algorithms using identical accuracy measures. We now give a brief description of each metric along with its mathematical definition.\bluecolor{for each metric give relevant citations.}
+As discussed in \secref{sec:related}, a range of accuracy metrics are required due to the diversity of application areas of energy disaggregation approaches. To satisfy this requirement, NILMTK provides a set of standard metrics. 
+%This will allow researchers to evaluate different energy disaggregation algorithms using identical accuracy measures.
+We now give a brief description of each metric along with its mathematical definition.\bluecolor{for each metric give relevant citations.}
 
 %error energy
 \textbf{Error in total energy assigned:} Represents the difference between the total energy assigned to appliance $n$ and the actual energy consumed by appliance $n$ over the entire data set.
@@ -318,9 +320,9 @@ As discussed in \secref{sec:related}, a range of accuracy metrics are required d
 \textbf{Fraction of total energy assigned correctly:} Represents the overlap between the fraction of total energy assigned to each appliance and the actual fraction of total energy consumed by each appliance over the entire data set.
 \begin{equation}
 %fraction = 
-        \sum_n min \left ( 
-        \frac{\sum_n y}{\sum_{n,t} y}, 
-        \frac{\sum_n \hat{y}}{\sum_{n,t} \hat{y}} 
+        \sum_n \mathrm{min} \left ( 
+        \frac{\sum_n y^{(n)}_t}{\sum_{n,t} y^{(n)}_t}, 
+        \frac{\sum_n \hat{y}^{(n)}_t}{\sum_{n,t} \hat{y}^{(n)}_t} 
         \right )
 \end{equation}
 
@@ -344,61 +346,61 @@ As discussed in \secref{sec:related}, a range of accuracy metrics are required d
 \textbf{Confusion matrix:} Represents the number of time slices in which each of an appliance's states were either confused with each other state or correctly classified.
 
 %tp fp fn tn
-\textbf{True positives, False positives, False negatives, True negatives:} Represents the number of time slices in which appliance $n$ was either correctly classified as being on~(TP), classified as being on while it was actually off~(FP), classified as off while is was actually on~(FN), and correctly classified as being off~(TN).
+\textbf{True positives, False positives, False negatives, True negatives:} Represents the number of time slices in which appliance $n$ was either correctly classified as being on~($\mathit{TP}$), classified as being on while it was actually off~($\mathit{FP}$), classified as off while is was actually on~($\mathit{FN}$), and correctly classified as being off~($\mathit{TN}$).
 \begin{equation}
-TP^{(n)} = 
+\mathit{TP}^{(n)} = 
 \sum_{t}
-and \left ( x^{(n)}_t = on, \hat{x}^{(n)}_t = on \right )
+\mathrm{And} \left ( x^{(n)}_t = \mathit{on}, \hat{x}^{(n)}_t = \mathit{on} \right )
 \end{equation}
 \begin{equation}
-FP^{(n)} = 
+\mathit{FP}^{(n)} = 
 \sum_{t}
-and \left ( x^{(n)}_t = off, \hat{x}^{(n)}_t = on \right )
+\mathrm{And} \left ( x^{(n)}_t = \mathit{off}, \hat{x}^{(n)}_t = \mathit{on} \right )
 \end{equation}
 \begin{equation}
-FN^{(n)} = 
+\mathit{FN}^{(n)} = 
 \sum_{t}
-and \left ( x^{(n)}_t = on, \hat{x}^{(n)}_t = off \right )
-\end{equation}\bluecolor{make AND caps}
+\mathrm{And} \left ( x^{(n)}_t = \mathit{on}, \hat{x}^{(n)}_t = \mathit{off} \right )
+\end{equation}
 \begin{equation}
-TN^{(n)} = 
+\mathit{TN}^{(n)} = 
 \sum_{t}
-and \left ( x^{(n)}_t = off, \hat{x}^{(n)}_t = off \right )
+\mathrm{And} \left ( x^{(n)}_t = \mathit{off}, \hat{x}^{(n)}_t = \mathit{off} \right )
 \end{equation}
 
 %tpr fpr
-\textbf{True/False positive rate:} Represents the fraction of time slices in which appliance $n$ was correctly predicted to be on that it was actually on~(TPR), and the fraction of time slices in which appliance $n$ was incorrectly predicted to be on that it was actually off~(FPR).
+\textbf{True/False positive rate:} Represents the fraction of time slices in which appliance $n$ was correctly predicted to be on that it was actually on~($\mathit{TPR}$), and the fraction of time slices in which appliance $n$ was incorrectly predicted to be on that it was actually off~($\mathit{FPR}$).
 \begin{equation}
-TPR^{(n)} = \frac{TP}{\left ( TP + FN \right )}
+\mathit{TPR}^{(n)} = \frac{\mathit{TP}}{\left ( \mathit{TP} + \mathit{FN} \right )}
 \end{equation}
 \begin{equation}
-FPR^{(n)} = \frac{FP}{\left ( FP + TN \right )}
+\mathit{FPR}^{(n)} = \frac{\mathit{FP}}{\left ( \mathit{FP} + \mathit{TN} \right )}
 \end{equation}
 
 %precision recall
 \textbf{Precision, Recall:} Represents the fraction of time slices in which appliance $n$ was correctly predicted to be on that it was actually off~(Precision), and the fraction of time slices in which appliance $n$ was correctly predicted to be on that it was actually on~(Recall)
 \begin{equation}
-Precision^{(n)} = \frac{TP}{\left ( TP + FP \right )}
+\mathit{Precision}^{(n)} = \frac{\mathit{TP}}{\left ( \mathit{TP} + \mathit{FP} \right )}
 \end{equation}
 \begin{equation}
-Recall^{(n)} = \frac{TP}{\left ( TP + FN \right )}
+\mathit{Recall}^{(n)} = \frac{\mathit{TP}}{\left ( \mathit{TP} + \mathit{FN} \right )}
 \end{equation}
 
 %f score
 \textbf{F-score:} Represents the harmonic mean between precision and recall.
 \begin{equation}
-F\text{-}score^{(n)} = \frac
-            {2 . Precision . Recall}
-            {Precision + Recall}
+\mathit{F\text{-}score}^{(n)} = \frac
+            {2 . \mathit{Precision} . \mathit{Recall}}
+            {\mathit{Precision} + \mathit{Recall}}
 \end{equation}
 
 %hamming loss
 \textbf{Hamming loss:} Represents the total information lost when appliances are incorrectly classified over the data set.
 \begin{equation}
-HammingLoss = 
+\mathit{HammingLoss} = 
         \frac{1}{T} \sum_{t}
         \frac{1}{N} \sum_{n}
-        xor \left ( x^{(n)}_t, \hat{x}^{(n)}_t \right )
+        \mathrm{Xor} \left ( x^{(n)}_t, \hat{x}^{(n)}_t \right )
 \end{equation}
 
 
