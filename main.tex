@@ -167,7 +167,7 @@ The remainder of this paper is organised as follows. In \secref{sec:related} we 
     UKPD (2014) & Imperial College & London, UK & 3-14 months & 4 & 6 sec & 1-6 sec \& 16 kHz\\
     \hline
   \end{tabular}
-  \caption{Comparison of household energy data sets. *BLUED labels every state transition for each appliance.}
+  \caption{Comparison of household energy data sets. *BLUED labels state transitions for each appliance.}
   \label{table:datasets}
 \end{table*}
 
@@ -189,16 +189,16 @@ In \secref{sec:need_nilm_toolkit} we discuss general purpose toolkits, and final
 As a result, it is only possible to evaluate whether changes in appliance states have been detected (e.g.\ washing machine turns on), rather than the assignment of aggregate power demand to individual appliances (e.g.\ washing machine draws 2~kW power). More recently, the Smart*~\cite{smart} data set was released, which contains household aggregate power data from 3 households, while sub-metered appliance power data was only collected from a single household.
 %\bluecolor{unclear what is the difference between inferring appliance activity and disaggregation of appliance.}
 
-In 2013 the Pecan Street sample data set was released~\cite{pecan}, which contains both aggregate and sub-metered power data from 10 households. Later, the Household Electricity Survey data set was released~\cite{hes}, which contains data from 251 households although aggregate data was only collected for F households. The Almanac of Minutely Power dataset (AMPds)~\cite{ampds} was also released that year containing both aggregate and sub-metered power data from a single household. Subsequently, the Indian data for Ambient Water and Electricity Sensing (iAWE)~\cite{iawe} was released, which contains both aggregate and sub-metered power data from a single house. Most recently, the UK Power Dataset (UKPD) \cite{ukpd} was released which contains data from four households using both aggregate meters and individual appliance sub-meters. Unfortunately, subtle differences in the aims of each data set have led to completely different data formats being used. As a result, a time-consuming engineering barrier exists when using the data sets, each of which are in different formats. This has resulted in publications using only a single data set to evaluate a given approach, and consequently the generality of results over large numbers of households are rarely investigated. We summarise these data sets in \tabref{table:datasets}.
+In 2013 the Pecan Street sample data set was released~\cite{pecan}, which contains both aggregate and sub-metered power data from 10 households. Later, the Household Electricity Survey data set was released~\cite{hes}, which contains data from 251 households although aggregate data was only collected for 14 households. The Almanac of Minutely Power dataset (AMPds)~\cite{ampds} was also released that year containing both aggregate and sub-metered power data from a single household. Subsequently, the Indian data for Ambient Water and Electricity Sensing (iAWE)~\cite{iawe} was released, which contains both aggregate and sub-metered power data from a single house. Most recently, the UK Power Dataset (UKPD) \cite{ukpd} was released which contains data from four households using both aggregate meters and individual appliance sub-meters. Unfortunately, subtle differences in the aims of each data set have led to completely different data formats being used. As a result, a time-consuming engineering barrier exists when using the data sets, each of which are in different formats. This has resulted in publications using only a single data set to evaluate a given approach, and consequently the generality of results over large numbers of households are rarely investigated. We summarise these data sets in \tabref{table:datasets}.
 
 %\bluecolor{you may summarize the literature using different datasets and their differences in a table if you need some more space}
 \subsection{Disaggregation Algorithms \& Benchmarks}
 \label{sec:algorithms}
 \noindent The REDD data set was proposed along with a performance result of a benchmark disaggregation algorithm using 10 second data across 5 of the 6 households~\cite{redd}. Kolter and Jaakkola later proposed an extension to the benchmark algorithm~\cite{kolter_2012}, however the extension was only evaluated using features extracted from 14~kHz data from a single house from the data set, and therefore the performance results are not directly comparable. Later, Zeifman~\cite{zeifman_2012} and Johnson and Willsky~\cite{johnson_2013} evaluated various approaches using the same data set, although both selected a different subset of appliances and calculated an artificial household aggregate from these appliances, therefore simplifying the disaggregation problem and preventing a numerical comparison with other publications. Subsequently, Parson et al.~\cite{parson_2012} and Rahayu et al.~\cite{rahayu_2012} both proposed new approaches, although each were evaluated using a different set of 4 houses from the REDD data set, again preventing a numerical comparison between publications. Last, Batra et al.~\cite{batra_2013} evaluated their approach on the REDD data set using a different household to Kolter and Jaakkola. As a result, it has not been possible to deduce whether one approach is preferable to another from the literature.
 
-Similarly, BLUED was introduced along with a benchmark algorithm~\cite{blued}, but has since only been used by one other publication~\cite{anderson_2012}. Similarly, AMPds has only been used to evaluate disaggregation algorithms proposed by the data set authors~\cite{ampds}. Clearly, the variety of different formats is slowing the uptake of new data sets, and also preventing algorithms from being tested across multiple data sets. 
+The BLUED data set was introduced along with a benchmark algorithm~\cite{blued}, but has since only been used by one other publication~\cite{anderson_2012}. Similarly, AMPds has only been used to evaluate disaggregation algorithms proposed by the data set authors~\cite{ampds}. Clearly, the variety of different formats is slowing the uptake of new data sets, and also preventing algorithms from being tested across multiple data sets. 
 
-It is essential to compare newly proposed disaggregation algorithms to the state-of-the-art in order to assess the increase in an algorithm's performance. However, the lack of available reference implementations of state-of-the-art disaggregation algorithms has led to authors often comparing against more basic benchmark algorithms. This problem is further compounded since there is no single consensus on which benchmarks to use, and as a result most publications use a different benchmark algorithm. For example, Kolter and Jaakkola compared their approach to a set of decoupled HMMs~\cite{kolter_2012}, Parson et al.\ and Batra et al.\ both evaluated their approaches against variants of their own approaches~\cite{parson_2012,batra_2013}, Zeifman compared their approach to a Bayesian classifier, while Rahayu et al. and Johnson and Willsky both compared against a Factorial Hidden Markov Model (FHMM)~\cite{rahayu_2012,johnson_2013}. Clearly, further publications would benefit from openly available benchmark algorithms against which newly proposed algorithms could be easily compared.
+It is essential to compare newly proposed disaggregation algorithms to the state of the art in order to assess the increase in an algorithm's performance. However, the lack of available reference implementations of state-of-the-art disaggregation algorithms has led to authors often comparing against more basic benchmark algorithms. This problem is further compounded since there is no single consensus on which benchmarks to use, and as a result most publications use a different benchmark algorithm. For example, Kolter and Jaakkola compared their approach to a set of decoupled HMMs~\cite{kolter_2012}, Parson et al.\ and Batra et al.\ both evaluated their approaches against variants of their own approaches~\cite{parson_2012,batra_2013}, Zeifman compared their approach to a Bayesian classifier, while Rahayu et al. and Johnson and Willsky both compared against a Factorial Hidden Markov Model (FHMM)~\cite{rahayu_2012,johnson_2013}. Clearly, further publications would benefit from openly available benchmark algorithms against which newly proposed algorithms could be easily compared.
 
 %\bluecolor{you could provide a comparison of different evaluation metrics in a table rather than in a text format.}
 \subsection{Evaluation metrics}
@@ -283,7 +283,7 @@ disaggregation approaches can be evaluated.  To help diagnose these issues, NILM
 provides diagnostic functions including:
 
 \textbf{Detect gaps:} Many NILM algorithms assume that each sensor channel is
-contiguous but this assumption is false when sensors are off or
+contiguous. However, this assumption is violated when sensors are off or
 malfunctioning.  A `gap' exists between any pair of consecutive
 samples if the time elapsed between them is larger than
 some threshold.
@@ -332,19 +332,18 @@ online documentation.\footnote{
 \label{sec:preprocessing}
 
 \noindent
-To mitigate the problems  with different datasets, some of which were presented in \secref{sec:diagnostic_definitions}, NILMTK provides several preprocessing functions, including:
+To mitigate the problems  with different data sets, some of which were presented in \secref{sec:diagnostic_definitions}, NILMTK provides several preprocessing functions, including:
 
 \textbf{Downsample:} As seen in \tabref{table:datasets}, the sampling rate of appliance monitors varies
-from 0.008 Hz to 15 kHz across the data sets. Downsample preprocessor down-samples data sets to a specified frequency using aggregation functions such as mean, mode and median.
+from 0.008~Hz to 15~kHz across the data sets. The downsample preprocessor down-samples data sets to a specified frequency using aggregation functions such as mean, mode and median.
 
 \textbf{Voltage normalisation:} The data sets presented in \tabref{table:datasets} have been
 collected from different countries, where voltage fluctuations vary
 widely. Batra et al. showed voltage fluctuates from 180-250~V in the
 iAWE data set collected in India~\cite{iawe}, while the voltage in the
-Smart* data set varies across the range 118-123~V. Hart et al.\ suggested to account these voltage fluctuations as they can
+Smart* data set varies across the range 118-123~V. Hart et al.\ suggested to account for these voltage fluctuations as they can
 significantly impact power draw~\cite{hart_1992}. Therefore, NILMTK
-has a voltage normalisation function which implements Hart's
-normalisation equation:
+provides a voltage normalisation function based on Hart's equation:
 \begin{equation}
 \textit{Power}_{\textit{normalised}} = 
 \left(\frac{\textit{Voltage}_{\textit{nominal}}}{\textit{Voltage}_{\textit{observed}}}\right)^2 
@@ -352,25 +351,25 @@ normalisation equation:
 \end{equation}
 %Figure \redcolor{X} shows the power draw of an air conditioner, before and after voltage normalisation.
 
-\textbf{Top-$k$ appliances}: It is often advantageous to model the top-$k$ energy consuming appliances for the following three reasons. 
-First, the disaggregation of such appliances provides the most value. Second, such appliances contribute the most salient features, and therefore the remaining appliances can be considered to contribute only noise. Third, each additional modelled appliance might contribute significantly to the complexity of the disaggregation task.
+\textbf{Top-$k$ appliances}: It is often advantageous to model the top-$k$ energy consuming appliances instead of all appliances for the following three reasons. 
+First, the disaggregation of such appliances provides the most value. Second, such appliances contribute the most salient features, and therefore the remaining appliances can be considered to contribute only noise. Third, each additional modelled appliance might contribute significantly to the complexity of the disaggregation task. Therefore, NILMTK provides a function to identify the top-$k$ energy consuming appliances.
 
 %In addition, the memory required by some NILM algorithms is exponential in the number of appliances. Thus, when a large number of appliances are considered, a single centralised model may not fit into memory.
 %, thus motivating the need for distributed algorithms. 
 %This necessitates the need to include top-$k$ appliances by their contribution which can be in terms of either energy or power. 
 
 NILMTK also provides preprocessing functions for fixing
-other common issues with these data sets, such as (i) interpolating
+other common issues with these data sets, such as: (i) interpolating
 small periods of missing data when appliance sensors did not report
-readings; (ii) filtering out implausible values (such as readings
+readings, (ii) filtering out implausible values (such as readings
 where observed voltage is more than twice the rated voltage) and (iii)
 filtering out appliance data when mains data is missing.
 
 Each data set importer defines a \texttt{preprocess}
 function which runs the necessary preprocessing functions to clean
 the specific data set. A detailed account of preprocessing functions supported by NILMTK can be found in
-\appref{app:functions} and in the online documentation\footnote{
-  \url{http://nilmtk.github.io/nilmtk/preprocessing.html}}.
+\appref{app:functions} and in the online documentation.\footnote{
+  \url{http://nilmtk.github.io/nilmtk/preprocessing.html}}
 
 \subsection{Training and Disaggregation Algorithms}
 \label{sec:training}
@@ -389,7 +388,7 @@ Since each time slice is considered as a separate optimisation problem, each tim
 %CO assumes time samples to be independent and identically distributed (iid). 
 CO resembles the subset sum problem and thus is NP-complete. The complexity of disaggregation for $T$ time slices is $O(TK^N)$, where $N$ is the number of appliances and $K$ is the number of appliance states. Since the complexity of CO is exponential in the number of appliances, the approach is only computationally tractable for a small number of modelled appliances.
 
-\textbf{Factorial Hidden Markov Model:} The power demand of each appliance can be modelled as the observed value of a hidden Markov model (HMM). The hidden component of these HMMs are the states of the appliances. Energy disaggregation involves jointly decoding the power draw of $n$ appliances and hence a factorial HMM~\cite{fhmm} is well suited. A FHMM can be represented by an equivalent HMM in which each state corresponds to a different combination of states of each appliance. Such a FHMM model has three parameters: (i) prior probability ($\pi$) containing $K^N$ entries, (ii) transition matrix ($A$) containing $K^N~*K^N$ or $K^{2N}$ entries, and (iii) emission matrix ($B$) containing $2K^N$ entries. The complexity of exact disaggregation for such a model is $O(TK^{2N})$, and as a result FHMMs scale even worse than CO. From an implementation perspective, even storing (or computing) $A$ for 14 appliances with two states each needs 8 GB of RAM. Hence, we propose to validate FHMMs on preprocessed data where either top-$k$ appliances are modelled, and appliances contributing less than a given threshold are discarded. However, it should be noted that more efficient pseudo-time algorithms could alternatively be used for inference over both CO and FHMM.
+\textbf{Factorial Hidden Markov Model:} The power demand of each appliance can be modelled as the observed value of a hidden Markov model (HMM). The hidden component of these HMMs are the states of the appliances. Energy disaggregation involves jointly decoding the power draw of $n$ appliances and hence a factorial HMM~\cite{fhmm} is well suited. A FHMM can be represented by an equivalent HMM in which each state corresponds to a different combination of states of each appliance. Such a FHMM model has three parameters: (i) prior probability ($\pi$) containing $K^N$ entries, (ii) transition matrix ($A$) containing $K^N~*K^N$ or $K^{2N}$ entries, and (iii) emission matrix ($B$) containing $2K^N$ entries. The complexity of exact disaggregation for such a model is $O(TK^{2N})$, and as a result FHMMs scale even worse than CO. From an implementation perspective, even storing (or computing) $A$ for 14 appliances with two states each consumes 8 GB of RAM. Hence, we propose to validate FHMMs on preprocessed data where the top-$k$ appliances are modelled, and appliances contributing less than a given threshold are discarded. However, it should be noted that more efficient pseudo-time algorithms could alternatively be used for inference over both CO and FHMM.
 
 %For algorithms such as FHMMs, modelling relationships amongst consecutive samples is necessary. Thus, NILMTK provides facilities for dividing data into continuous sets for training and testing purposes. Details for adding new algorithms are provided in \appref{app:new_algo}.
 For algorithms such as FHMMs, it is necessary to model the relationships amongst consecutive samples. Thus, NILMTK provides facilities for dividing data into continuous sets for training and testing. Details for adding new algorithms are provided in \appref{app:new_algo}.
@@ -399,7 +398,7 @@ For algorithms such as FHMMs, it is necessary to model the relationships amongst
 %\redcolor{I think the argument here should be: benchmark algos require sub-metered data -> sub-metered data is not available in real deployments -> recent training methods have been proposed which do not require sub-metered data -> need an interface between training and disag to support different training methods}
 
 \noindent
-Many approaches require sub-metered power data to be collected for training purposes from the same household in which disaggregation is to be performed. However, such data is costly and intrusive to collect, and therefore is unlikely to be available in a large-scale deployment of a NILM system. As a result, recent research has proposed training methods which do not require sub-metered power data to be collected from each household~\cite{kim_2011,parson_2012}. To provide a clear interface between training and disaggregation algorithms, NILMTK provides a Model module which encapsulates the results of the training module required by the disaggregation module. Each implementation of the Model module must provide export and import functions to interface with a JSON file for persistent model storage. NILMTK currently includes importers and exporters for both the FHMM and CO approaches described in \secref{sec:training}.
+Many approaches require sub-metered power data to be collected for training purposes from the same household in which disaggregation is to be performed. However, such data is costly and intrusive to collect, and therefore is unlikely to be available in a large-scale deployment of a NILM system. As a result, recent research has proposed training methods which do not require sub-metered power data to be collected from each household~\cite{kim_2011,parson_2012}. To provide a clear interface between training and disaggregation algorithms, NILMTK provides a Model module which encapsulates the results of the training module required by the disaggregation module. Each implementation of the Model module must provide import and export functions to interface with a JSON file for persistent model storage. NILMTK currently includes importers and exporters for both the FHMM and CO approaches described in \secref{sec:training}.
 
 %Recently, a lot of interest has arisen in deploying live NILM systems, as evidenced by the many startup companies currently aiming to provide disaggregated consumption feedback to end consumers. However, the application of recent NILM algorithms proposed in academic research for live disaggregation is hindered by their primary suitability for offline statistical analysis of fixed data sets. Motivated by reducing the barrier from offline algorithms to those suitable for live deployments, we developed the Model module in NILMTK which encapsulates the results of the training module required by the disaggregation module. It is the responsibility of the model developer to create export and import functions to interface with a JSON file. NILMTK currently includes importers and exporters for both the FHMM and CO approaches. Further, in \secref{sec:use_case}, we show how if the rated power is known, we can avoid learning on sub-metered power data. At the time of deployment, this learnt JSON model can be easily imported and used for disaggregation.\bluecolor{rewrite}
 
@@ -407,7 +406,7 @@ Many approaches require sub-metered power data to be collected for training purp
 \label{sec:metrics}
 
 \noindent
-As discussed in \secref{sec:related}, a range of accuracy metrics are required due to the diversity of application areas of energy disaggregation research. To satisfy this requirement, NILMTK provides a set of metrics which combines both general detection metrics and those specific to energy disaggregation. We now give a brief description of each metric implemented in NILMTK along with its mathematical definition.
+As discussed in \secref{sec:evaluation_metrics}, a range of accuracy metrics are required due to the diversity of application areas of energy disaggregation research. To satisfy this requirement, NILMTK provides a set of metrics which combines both general detection metrics and those specific to energy disaggregation. We now give a brief description of each metric implemented in NILMTK along with its mathematical definition.
 
 %error energy
 \textbf{Error in total energy assigned:} The difference between the total assigned energy and the actual energy consumed by appliance $n$ over the entire data set.
@@ -503,17 +502,13 @@ As discussed in \secref{sec:related}, a range of accuracy metrics are required d
         \mathrm{XOR} \left ( x^{(n)}_t, \hat{x}^{(n)}_t \right )
 \end{equation}
 
-
-
-\noindent
 In \appref{app:appendix_pipeline} we summarise the NILMTK pipeline with a code snippet to illustrate the ease by which data sets can be imported and preprocessed, algorithms can be trained and used to disaggregate a household's energy usage, and accuracy metrics can be employed to evaluate disaggregation accuracy.
-
 
 \section{Evaluation}
 \label{evaluation}
 
 \noindent
-We now demonstrate several examples of the rich analyses supported by NILMTK. First, we diagnose some common (and inevitable) issues in a selection of data sets.  Then we show patterns of appliance usage. Third, we give some examples of the effect of voltage normalisation on the power demand of individual appliances, and discuss how this might affect the performance of a disaggregation algorithm. Fourth, we present summary performance results of the two benchmark algorithms included in NILMTK across six data sets using a number of accuracy metrics. Finally, we present detailed results of these algorithms for a single data set, and discuss their performance for different appliances.
+We now demonstrate several examples of the rich analyses supported by NILMTK. First, we diagnose some common (and inevitable) issues in a selection of data sets.  Second, we show patterns of appliance usage. Third, we give some examples of the effect of voltage normalisation on the power demand of individual appliances, and discuss how this might affect the performance of a disaggregation algorithm. Fourth, we present summary performance results of the two benchmark algorithms included in NILMTK across six data sets using a number of accuracy metrics. Finally, we present detailed results of these algorithms for a single data set, and discuss their performance for different appliances.
 
 \subsection{Data Set Diagnostics}
 
@@ -556,8 +551,8 @@ that AMPds used a robust recording platform because it has a
 percentage up-time of 100\%, a dropout rate of zero and 97\% of the
 energy recorded by the mains channel was captured by the sub-meters.
 Similarly, Pecan Street has an up-time of 100\% and zero dropout rate.  However, two homes
-in Pecan Street registered a proportion of energy sub-metered of over
-100\%. This indicates that some overlap exists between the metered channels, and as a result some appliances are metered by both channels.
+in the Pecan Street data registered a proportion of energy sub-metered of over
+100\%. This indicates that some overlap exists between the metered channels, and as a result some appliances are metered by multiple channels.
 %despite the removal of channels which were clearly measuring circuits (as distinct from appliances). 
 %This indicates that other channels are likely be measuring circuits (and hence some appliances are double-counted). 
 %Many data sets do not explicitly describe which sub-meter channels measure circuits and which measure appliances.
@@ -574,15 +569,15 @@ only one large gap.  Ignoring this gap and focusing on the time
 periods where the sensors are recording, we see numerous periods where
 the dropout rate is around 10\%.  Such issues are by no means unique
 to REDD and are crucial to diagnose before data sets can be used for
-the evaluation of disaggregation algorithms, or for data set
+the evaluation of disaggregation algorithms or for data set
 statistics.
 
 \subsection{Data Set Statistics}
 
 \noindent
-Energy disaggregation systems must model individual appliances.  Hence, as well as diagnosing technical issues with each data set, we can also visualise patterns of behaviour recorded in each data set. For example, different appliances draw a different amount of power (e.g.\ a toaster draws approximately 1.57~kW), are used at different times of day (e.g.\ the TV is usually on in the evening) and have different correlations with external factors such as weather (e.g.\ lower outside temperature implies more usage of electric heating). Furthermore, load profiles of different appliances of the same type can vary considerably, especially appliances from different countries (e.g.\ the two washing machine profiles in Figure~\ref{fig:wm}). Some disaggregation systems benefit by capturing these patterns (for example, the conditional factorial hidden Markov model (CFHMM)~\cite{kim_2011} can model the influence of time of day on appliance usage). In the following sections, we present examples of how such information can be extracted from existing data sets using NILMTK, covering the distribution of appliance power demands (\secref{sec:power_hist}), usage patterns (\secref{sec:usage_hist}) and external dependencies (\secref{sec:weather_correlation}).
+Energy disaggregation systems must model individual appliances.  Hence, as well as diagnosing technical issues with each data set, NILMTK also provides functions to visualise patterns of behaviour recorded in each data set. For example, different appliances draw a different amount of power (e.g.\ a toaster draws approximately 1.57~kW), are used at different times of day (e.g.\ the TV is usually on in the evening) and have different correlations with external factors such as weather (e.g.\ lower outside temperature implies more usage of electric heating). Furthermore, load profiles of different appliances of the same type can vary considerably, especially appliances from different countries (e.g.\ the two washing machine profiles in Figure~\ref{fig:wm}). Some disaggregation systems benefit by capturing these patterns (for example, the conditional factorial hidden Markov model (CFHMM)~\cite{kim_2011} can model the influence of time of day on appliance usage). In the following sections, we present examples of how such information can be extracted from existing data sets using NILMTK, covering the distribution of appliance power demands (\secref{sec:power_hist}), usage patterns (\secref{sec:usage_hist}) and external dependencies (\secref{sec:weather_correlation}).
 
-\subsubsection{Appliance power histograms}
+\subsubsection{Appliance power demands}
 \label{sec:power_hist}
 
 \noindent
@@ -591,7 +586,7 @@ distribution of powers used by a selection of appliances.  Appliances
 such as toasters and kettles tend to have just two possible power states:
 on and off.  This simplicity makes them amenable to be modelled by,
 for example, Markov chains with only two states per chain.  In contrast, more complex appliances
-such as washing machines, vacuum cleaners, dimmer lights and computers often
+such as washing machines, vacuum cleaners and computers often
 have many more states.
 
 \begin{figure*}[!t]
@@ -647,7 +642,7 @@ data set has two air conditioning units which account for almost half of the hou
 %day and per week; correlations between appliance usage and weather
 %variables; and histograms of appliance on-durations. 
 
-\subsubsection{Appliance usage histograms}
+\subsubsection{Appliance usage patterns}
 \label{sec:usage_hist}
 \begin{figure}[!t]
   \centering
@@ -667,9 +662,9 @@ similar because the Home theatre PC is the only video source for the TV. In cont
 \label{sec:weather_correlation}
 \noindent
 %We expect the usage of some appliances to be correlated with some weather variables.  
-Previous studies have demonstrated correlations
+Previous studies have shown correlations
 between temperature and heating/cooling demand in
-Australia~\cite{RicharddeDear2002} and between temperature and household electricity usage in the USA~\cite{Kavousian2013a}.  
+Australia~\cite{RicharddeDear2002} and between temperature and total household demand in the USA~\cite{Kavousian2013a}.  
 %We wanted to search for similar correlations.
 %If such correlations can be found then a disaggregation system could learn correlations between weather variables and appliance usage in order to refine its appliance usage estimates~\cite{wytock_2013}.\bluecolor{maybe write more succintly Disagg systems can benefit by finding ..correlations}
 Such correlations could be used by a NILM system to refine its appliance usage estimates~\cite{wytock_2013}.
@@ -734,20 +729,20 @@ UKPD &1.06 &11.42 &0.10 &0.52 &3.66 &3.67 &0.81 &0.80 &0.38 &0.38\\
 \end{table*}
 
 \noindent
-We now compare the disaggregation results across the first house of six publicly available data sets. Again, BLUED, Tracebase and HES were not included for the same reasons as in \secref{sec:data_format}. Since all the data sets were collected over different durations, we used the first half of the samples for training and the remaining half for disaggregation across all data sets. Further, we preprocessed  the REDD, UKPD, Smart* and iAWE data sets to 1 minute frequency using the down-sampling filter (\secref{sec:preprocessing}) to account for different aggregate and mains data sampling frequencies and compensating for intermittent lost data packets. The small gaps in REDD, UKPD, SMART* and iAWE were interpolated, while the time periods where either of mains data or appliance data was missing were ignored. AMPds and Pecan Street data did not require any preprocessing. 
+We now compare the disaggregation results across the first house of six publicly available data sets. Again, BLUED, Tracebase and HES were not included for the same reasons as in \secref{sec:data_format}. Since all the data sets were collected over different durations, we used the first half of the samples for training and the remaining half for disaggregation across all data sets. Further, we preprocessed  the REDD, UKPD, Smart* and iAWE data sets to 1 minute frequency using the down-sampling filter (\secref{sec:preprocessing}) to account for different aggregate and mains data sampling frequencies and compensating for intermittent lost data packets. The small gaps in REDD, UKPD, SMART* and iAWE were interpolated, while the time periods where either the mains data or appliance data were missing were ignored. AMPds and the Pecan Street data did not require any preprocessing. 
 %Apart from REDD, Smart*, UKPD and iAWE, the remaining data sets were processed at the frequency at which they were made available (i.e.\ Pecan Street - 1 minute, AMPds - 1 minute)\bluecolor{already said this?}. 
 
 Since both CO and FHMM have exponential computational complexity in the number of appliances, we model only those appliances whose total energy contribution was greater than 5\%. Across all the data sets, the appliances which contribute more than 5\% of the aggregate include HVAC appliances such as the air conditioner and electric heating, and appliances which are used throughout the day such as the refrigerator. We model all appliances using two states (on and off) across our analyses, although it should be noted that any number of states could be used. However, our experiments are intended to demonstrate a fair comparison of the benchmark algorithms, rather than an fully optimised version of either approach.
 %. To the best of our knowledge, there exists no clear solution to the problem of finding the number of states an appliance should be modelled as. While techniques such as elbow joint method for finding the optimum number of clusters and cluster validity measures such as Silhouette measure are similar, we found them to be favouring more states per appliance than what should be expected. 
-We compare the disaggregation performance of CO and FHMM across the following three metrics defined in \secref{sec:metrics}: (i) fraction of total energy assigned correctly (FTE), (ii) normalised error in assigned power (NEP) and (iii) F-score. These metrics were chosen because they have been used most often in prior NILM work. Preferable performance is indicated by a low NEP and a high F-score and FTE. The evaluation was performed on a laptop with a 2.3~GHz i7~processor and 8~GB RAM running Linux.
+We compare the disaggregation performance of CO and FHMM across the following three metrics defined in \secref{sec:metrics}: (i) fraction of total energy assigned correctly (FTE), (ii) normalised error in assigned power (NEP) and (iii) F-score. These metrics were chosen because they have been used most often in prior NILM work. Preferable performance is indicated by a low NEP and a high FTE and F-score. The evaluation was performed on a laptop with a 2.3~GHz i7~processor and 8~GB RAM running Linux.
 
 %Table~\tabref{table:disaggregation} summarises the results of the two algorithms across the four data sets. It can be seen that across all the metrics, CO performance is similar to FHMM performance in iAWE and PECAN. In both the used homes from these two datasets, space heating contributes very significantly (about 60\% for a single air conditioner which has a power draw of ~2700 W in the PECAN home and about \redcolor{40\%} across two air conditioner having a power draw of ~1700W and ~1200W respectively. These appliances are easier to disaggregate owing to their huge power demand in comparison to appliances such as electronics and lighting. However, in the first homes used from REDD and AMPds dataset, the power consumption is spread across a lot more number of appliances. A significant number of appliances (14 in AMPds home and 13 in REDD) each contribute less than 5\% of the total load. Under such circumstances, it can be observed that FHMM performance is superior to CO performance across the three metrics. This confirms the theoretical foundations propounded by Hart et al.\cite{hart_1992}; that CO is highly sensitive to small variations in the aggregate load. In contrast, FHMM overcomes these by considering an associated transition probability between states. We further discuss 
 
-\tabref{table:disaggregation} summarises the results of the two algorithms across the six data sets. It can be observed that FHMM performance is superior to CO performance across the three metrics for REDD, Smart* and AMPds. This confirms the theoretical foundations proposed by Hart~\cite{hart_1992}; that CO is highly sensitive to small variations in the aggregate load. The FHMM approach overcomes these shortcomings by considering an associated transition probability between the different states of an appliance. However, it can be seen that CO performance is similar to FHMM performance in iAWE, Pecan Street and UKPD across all metrics. This is likely due to the fact that very few appliances contribute more than 5\% of the household aggregate load in the selected households in these datasets. For instance, space heating contributes very significantly (about 60\% for a single air conditioner which has a power draw of ~2.7 kW in the Pecan Street house and about 35\% across two air conditioners having a power draw of ~1.8 kW and ~1.6 kW respectively in iAWE). As a result, these appliances are easier to disaggregate by both algorithms, owing to their relatively high power demand in comparison to appliances such as electronics and lighting. In the UKPD house the washing machine was one of the appliances contributing more than 5\% of the household aggregate load, which brought down overall metrics across both approaches. 
+\tabref{table:disaggregation} summarises the results of the two algorithms across the six data sets. It can be observed that FHMM performance is superior to CO performance across the three metrics for REDD, Smart* and AMPds. This confirms the theoretical foundations proposed by Hart~\cite{hart_1992}; that CO is highly sensitive to small variations in the aggregate load. The FHMM approach overcomes these shortcomings by considering an associated transition probability between the different states of an appliance. However, it can be seen that CO performance is similar to FHMM performance in iAWE, Pecan Street and UKPD across all metrics. This is likely due to the fact that very few appliances contribute more than 5\% of the household aggregate load in the selected households in these data sets. For instance, space heating contributes very significantly (about 60\% for a single air conditioner which has a power draw of ~2.7 kW in the Pecan Street house and about 35\% across two air conditioners having a power draw of ~1.8 kW and ~1.6 kW respectively in iAWE). As a result, these appliances are easier to disaggregate by both algorithms, owing to their relatively high power demand in comparison to appliances such as electronics and lighting. In the UKPD house the washing machine was one of the appliances contributing more than 5\% of the household aggregate load, which brought down overall metrics across both approaches. 
 %\bluecolor{mention circuits are inadequate sometimes! in smart* I suspect this is the case for poor results}
 %However, in the first homes used from REDD and AMPds dataset, the power consumption is spread across a lot more number of appliances. A significant number of appliances (14 in AMPds home and 13 in REDD) each contribute less than 5\% of the total load. Under such circumstances,  
 
-Another important aspect to consider is the time required for disaggregation and training, again reported in \tabref{table:disaggregation}. These timings confirm the fact that CO is exponentially quicker than FHMM. This raises an interesting insight: In households such as the ones used from Pecan Street and iAWE in the above analysis, it may be beneficial to use CO over a FHMM owing to the reduced amount of time required for disaggregation and training, even though FHMMs are in general considered to be more powerful. It should be noted that the greater amount of time required to train and disaggregate the AMPds data is a result of the data set containing one year of data, as opposed to the Pecan Street data set which contains one week of data, as shown by \tabref{table:datasets}.
+Another important aspect to consider is the time required for training and disaggregation, again reported in \tabref{table:disaggregation}. These timings confirm the fact that CO is exponentially quicker than FHMM. This raises an interesting insight: in households such as the ones used from Pecan Street and iAWE in the above analysis, it may be beneficial to use CO over a FHMM owing to the reduced amount of time required for training and disaggregation, even though FHMMs are in general considered to be more powerful. It should be noted that the greater amount of time required to train and disaggregate the AMPds data is a result of the data set containing one year of data, as opposed to the Pecan Street data set which contains one week of data, as shown by \tabref{table:datasets}.
 
 \subsection{Detailed Disaggregation Results}
 
@@ -775,22 +770,22 @@ Another important aspect to consider is the time required for disaggregation and
 \end{figure}
 
 \noindent
-Having compared disaggregation results across different data sets, we now give a detailed discussion of disaggregation results across different appliances for a single house in the iAWE data set. The iAWE data set was chosen for this experiment as the authors provided metadata such as set temperature of air conditioners and other occupant patters. \tabref{table:disaggregation_iawe} shows the disaggregation performance across the top six energy consuming appliances, in which each appliance is modelled using using two states as before. It can be seen that CO and FHMM report similar performance across all appliances. We observe that the results for appliances such as the washing machine and switch mode power supply based appliances such as laptop and entertainment unit (television) are much worse when compared to HVAC loads like air conditioners across both metrics. Prior literature shows that complex appliances such as washing machines are hard to model~\cite{barker_2013}.
+Having compared disaggregation results across different data sets, we now give a detailed discussion of disaggregation results across different appliances for a single house in the iAWE data set. The iAWE data set was chosen for this experiment as the authors provided metadata such as set temperature of air conditioners and other occupant patterns. \tabref{table:disaggregation_iawe} shows the disaggregation performance across the top six energy consuming appliances, in which each appliance is modelled using two states as before. It can be seen that CO and FHMM report similar performance across all appliances. We observe that the results for appliances such as the washing machine and switch mode power supply based appliances such as laptop and entertainment unit (television) are much worse when compared to HVAC loads like air conditioners across both metrics. Furthermore, prior literature shows that complex appliances such as washing machines are hard to model~\cite{barker_2013}.
 
-We observe that the performance accuracy of air conditioner 2 is much worse than air conditioner 1. This is due to the fact that during the instrumentation, air conditioner 2 was operated at a set temperature of $26\,^{\circ}\mathrm{C}$. With an external temperature roughly $5-10\,^{\circ}\mathrm{C}$ below this set temperature, this air conditioner reached the set temperature quickly and turned off the compressor while still running the fan. However, air conditioner 1 was operated at $16\,^{\circ}\mathrm{C}$ and mostly had the compressor on. Thus, air conditioner 2 spent much more time in this intermediate state (compressor off, fan on) in comparison to air conditioner 1. \figref{fig:ac_disaggregation} shows how both FHMM and CO are able to detect on and off events of air conditioner 2. Since air conditioner 2 spent a considerable amount of time in the intermediate state, the learnt two state model is less appropriate in comparison to the two state model used for air conditioner 1. This can be further seen in \figref{fig:ac_disaggregation}, where we observe that both FHMM and CO learn a much lower power level of around 1.1~kW, in comparison to the rated power of around 1.6~kW. We believe that this could be corrected by learning a three state model for this air conditioner, which comes at a cost of increased training and disaggregation computational and memory requirements.
+We observe that the performance accuracy of air conditioner 2 is much worse than air conditioner 1. This is due to the fact that during the instrumentation, air conditioner 2 was operated at a set temperature of $26\,^{\circ}\mathrm{C}$. With an external temperature roughly $5-10\,^{\circ}\mathrm{C}$ below this set temperature, this air conditioner reached the set temperature quickly and turned off the compressor while still running the fan. However, air conditioner 1 was operated at $16\,^{\circ}\mathrm{C}$ and mostly had the compressor on. Thus, air conditioner 2 spent much more time in this intermediate state (compressor off, fan on) in comparison to air conditioner 1. \figref{fig:ac_disaggregation} shows how both FHMM and CO are able to detect on and off events of air conditioner 2. Since air conditioner 2 spent a considerable amount of time in the intermediate state, the learnt two state model is less appropriate in comparison to the two state model used for air conditioner 1. This can be further seen in the figure, where we observe that both FHMM and CO learn a much lower power level of around 1.1~kW, in comparison to the rated power of around 1.6~kW. We believe that this could be corrected by learning a three state model for this air conditioner, which comes at a cost of increased training and disaggregation computational and memory requirements.
 
 
 \section{Conclusions and future work}
 \label{sec:conclusions}
 
 \noindent
-In this paper, we proposed NILMTK; the first open source toolkit designed to allow empirical comparisons to be made between energy disaggregation algorithms across multiple data sets. The toolkit defines a common data format, NILMTK-DF, and includes parsers from six publicly available data sets to NILMTK-DF. The toolkit further facilitates calculation of data set statistics, diagnosing problems and mitigating them via preprocessing functions. In addition, the toolkit includes implementations of two benchmark disaggregation algorithms based on combinatorial optimisation and the factorial hidden Markov model. Finally, NILMTK includes implementations of a set of performance metrics which will enable future research to directly compare disaggregation approaches through a common set of accuracy measures. We demonstrated several analysis facilitated by NILMTK including: use of statistics functions to detect missing data, learning of appliance models from sub-metered data, comparing disaggregation algorithms across multiple data sets and breakdown of each algorithm's performance by individual appliances.
+In this paper, we proposed NILMTK; the first open source toolkit designed to allow empirical comparisons to be made between energy disaggregation algorithms across multiple data sets. The toolkit defines a common data format, NILMTK-DF, and includes parsers from six publicly available data sets to NILMTK-DF. The toolkit further facilitates the calculation of data set statistics, diagnosing problems and mitigating them via preprocessing functions. In addition, the toolkit includes implementations of two benchmark disaggregation algorithms based on combinatorial optimisation and the factorial hidden Markov model. Finally, NILMTK includes implementations of a set of performance metrics which will enable future research to directly compare disaggregation approaches through a common set of accuracy measures. We demonstrated several analyses facilitated by NILMTK including: use of statistics functions to detect missing data, learning of appliance models from sub-metered data, comparing disaggregation algorithms across multiple data sets and breakdown algorithm performance by individual appliances.
 
-Future work will focus upon the addition of recently proposed training and disaggregation algorithms and data sets. For instance, larger data sets such as the HES data set could also provide additional insight into disaggregation performance.
+Future work will focus upon the addition of recently proposed training and disaggregation algorithms and data sets. For instance, larger data sets such as HES could also provide additional insight into disaggregation performance.
 In addition, recently proposed algorithms which do not require sub-metered power data for their unsupervised training could be compared against the current supervised algorithms.
 %These algorithms are computationally expensive so a GPU implementation may be explored. 
 % not sure if we should put this as approximate algorithms would be a better solution than CPU implementations
-An additional direction for future work could be use a semantic wiki to maintain a comprehensive, communal schema for appliance metadata.
+An additional direction for future work could be the use of a semantic wiki to maintain a comprehensive, communal schema for appliance metadata.
 %We have made some initial steps towards creating a metadata schema for appliances.  However, we believe the task of maintaining a comprehensive, communal schema may be better suited to a semantic wiki.
 Finally, the inclusion of a household simulator (e.g.\ \cite{liang_2010}) would allow disaggregation algorithms to be evaluated in a wider variety of settings than those represented by publicly available data sets.
 %Since all data sets represent a limited number of households, it is currently impossible to test how a disaggregation algorithm might perform in a household other than those present in existing data sets. However, a simulator would overcome this problem by generating data for new households by either combining appliance data from multiple households or simulating appliances using detailed appliance models.
@@ -818,7 +813,7 @@ Finally, the inclusion of a household simulator (e.g.\ \cite{liang_2010}) would 
 
 \section{NILMTK-DF}
 \label{app:appendix_data_format}
-\noindent We now provide the details of NILMTK-DF. \figref{fig:nilmtk-format} shows NILMTK hierarchical structure for modelling physical hierarchies. Each dataset consists of one of more households. Each house may comprise of sensors broadly divided as utility (eg. power), ambient (eg. temperature) and external sensors (eg. outside weather). Wherever available, we also store metadata for a household such as area, floor, etc.
+\noindent We now provide the details of NILMTK-DF. \figref{fig:nilmtk-format} shows NILMTK hierarchical structure for modelling physical hierarchies. Each data set consists of one of more households. Each house may comprise of sensors broadly divided as utility (eg. power), ambient (eg. temperature) and external sensors (eg. outside weather). Wherever available, we also store metadata for a household such as area, floor, etc.
 Across, utilities, we focus mainly on electrical data, which is divided into mains (coming from grid), panel (circuits) and appliances. Each of these can store multiple physical measurement quantities such as 
 active power, voltage etc. Further, wherever available, we also store appliance metadata such as rated power, details of instrumenting sensor, etc. From an implementation perspective, the lowest level in NILMTK-DF hierarchy is stored as a Data Frame, indexed on time and having physical quantities as columns for each of appliances, mains and circuits.
 %\begin{figure}
